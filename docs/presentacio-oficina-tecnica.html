@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jira — Pla pilot Oficina Tècnica</title>
+<style>
+  :root{
+    --bg:#0f1720; --panel:#141f2b; --ink:#eef2f6; --muted:#9fb0bf;
+    --accent:#5aa9e6; --accent2:#7fd3a3; --border:#26333f;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    display:flex; flex-direction:column;
+  }
+  .deck{ flex:1; display:flex; align-items:center; justify-content:center; padding:16px; }
+  .slide{
+    display:none; width:min(920px, 100%); background:var(--panel);
+    border:1px solid var(--border); border-radius:16px; padding:clamp(20px,4vw,56px);
+  }
+  .slide.active{ display:block; }
+  .kicker{ color:var(--accent); font-weight:600; letter-spacing:.04em; text-transform:uppercase; font-size:.8rem; margin:0 0 8px; }
+  h1{ font-size:clamp(1.4rem,3vw,2rem); margin:0 0 18px; line-height:1.25; }
+  h2{ font-size:1.05rem; color:var(--accent2); margin:22px 0 8px; }
+  p{ line-height:1.55; color:var(--ink); }
+  .muted{ color:var(--muted); }
+  ul{ margin:6px 0 0; padding-left:1.2em; line-height:1.6; }
+  li{ margin:4px 0; }
+  table{ width:100%; border-collapse:collapse; margin-top:10px; }
+  th,td{ text-align:left; padding:8px 10px; border-bottom:1px solid var(--border); font-size:.95rem; }
+  th{ color:var(--muted); font-weight:600; }
+  .badge{
+    display:inline-block; padding:3px 10px; border-radius:999px; font-size:.78rem;
+    border:1px solid var(--border); color:var(--muted); margin-right:6px;
+  }
+  .timeline{ display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
+  .step{
+    flex:1 1 200px; background:#0f1a24; border:1px solid var(--border);
+    border-radius:12px; padding:14px; min-width:180px;
+  }
+  .step .when{ color:var(--accent); font-weight:600; font-size:.85rem; margin-bottom:6px; }
+  .nav{
+    display:flex; align-items:center; justify-content:center; gap:14px;
+    padding:14px; color:var(--muted); font-size:.9rem;
+  }
+  .nav button{
+    background:transparent; color:var(--ink); border:1px solid var(--border);
+    border-radius:8px; padding:8px 16px; cursor:pointer; font-size:.9rem;
+  }
+  .nav button:hover{ border-color:var(--accent); color:var(--accent); }
+  .dots{ display:flex; gap:6px; }
+  .dot{ width:7px; height:7px; border-radius:50%; background:var(--border); }
+  .dot.active{ background:var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="deck">
+
+  <section class="slide active">
+    <p class="kicker">1 / 3 — Què és</p>
+    <h1>Jira: una safata d'entrada única per a les peticions</h1>
+    <p>És l'eina on registrem i fem seguiment de cada petició fins que queda resolta, amb un estat visible per a qui la demana i per a qui l'executa.</p>
+    <h2>Conceptes clau</h2>
+    <table>
+      <tr><th>Concepte</th><th>Què és</th></tr>
+      <tr><td>Espai</td><td>El "calaix" que agrupa totes les peticions de l'Oficina Tècnica</td></tr>
+      <tr><td>Tasca</td><td>Cada petició concreta (informe, presentació, dada...)</td></tr>
+      <tr><td>Estat</td><td>Rebuda → En curs → Pendent validació → Feta</td></tr>
+      <tr><td>Assignat</td><td>Qui la treballa</td></tr>
+    </table>
+  </section>
+
+  <section class="slide">
+    <p class="kicker">2 / 3 — Proposta de configuració</p>
+    <h1>Un únic espai per a totes les peticions</h1>
+    <ul>
+      <li><b>Tipus de tasca:</b> Petició d'informació · Informe · Presentació · Altres</li>
+      <li><b>Flux simple:</b> Rebuda → En curs → Pendent validació → Feta</li>
+      <li><b>Dades mínimes obligatòries:</b> qui demana, què, per a quan, línia de treball</li>
+      <li><b>Formació i implantació:</b> Elisa i Kilian</li>
+    </ul>
+    <p class="muted">Proposta de partida — es tanca definitivament amb l'equip.</p>
+  </section>
+
+  <section class="slide">
+    <p class="kicker">3 / 3 — Pla pilot</p>
+    <h1>De setembre 2026 a l'1 de gener 2027</h1>
+    <div class="timeline">
+      <div class="step">
+        <div class="when">Ara</div>
+        Formació pràctica de 1-2h, línia per línia (Elisa i Kilian)
+      </div>
+      <div class="step">
+        <div class="when">Fins 31 des. 2026</div>
+        Prova pilot amb tasques reals: peticions d'informació, informes, presentacions
+      </div>
+      <div class="step">
+        <div class="when">1 gen. 2027</div>
+        Jira és el repositori únic de peticions d'informació
+      </div>
+    </div>
+    <p class="muted" style="margin-top:18px;">La millora de configuració durant el pilot afectarà totes les línies de treball. Ho decidim junts.</p>
+  </section>
+
+</div>
+
+<div class="nav">
+  <button id="prev">‹ Anterior</button>
+  <div class="dots" id="dots"></div>
+  <button id="next">Següent ›</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const dotsEl = document.getElementById('dots');
+  let i = 0;
+  slides.forEach((_, idx) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (idx === 0 ? ' active' : '');
+    dotsEl.appendChild(d);
+  });
+  const dots = document.querySelectorAll('.dot');
+  function show(n){
+    slides[i].classList.remove('active');
+    dots[i].classList.remove('active');
+    i = (n + slides.length) % slides.length;
+    slides[i].classList.add('active');
+    dots[i].classList.add('active');
+  }
+  document.getElementById('prev').onclick = () => show(i - 1);
+  document.getElementById('next').onclick = () => show(i + 1);
+  window.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') show(i + 1);
+    if (e.key === 'ArrowLeft') show(i - 1);
+  });
+</script>
+
+</body>
+</html>
