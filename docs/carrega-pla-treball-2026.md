@@ -4,7 +4,7 @@
 
 ## 1. Abast de la càrrega
 
-Es va carregar **només 4 de les 6 línies que ja tenien espai creat a Jira**, deixant-ne 2 sense tocar perquè ja contenien feina real feta a mà:
+Es va fer en dues tongades. Primer les 4 línies buides amb espai creat; després, a petició expressa de l'usuari, també AIN i SI tot i tenir-hi ja feina real feta a mà (veure §1.1):
 
 | Espai Jira | Full Excel | Estat |
 |---|---|---|
@@ -12,20 +12,26 @@ Es va carregar **només 4 de les 6 línies que ja tenien espai creat a Jira**, d
 | APR — Atenció Primària | ATENCIÓ PRIMÀRIA | ✅ Carregat |
 | ASM — Atenció a la Salut Mental | SALUT MENTAL | ✅ Carregat |
 | CIF — Contractació i Facturació | CONTRACTACIÓ I INVERSIONS | ✅ Carregat (línia pilot, la més petita) |
-| AIN — Atenció Intermèdia | ATENCIÓ INTERMÈDIA | ⛔ No tocat (ja tenia 59 issues reals fets a mà) |
-| SI — Sistemes Informació | SISTEMES D'INFORMACIÓ | ⛔ No tocat (barreja de proves i feina real) |
+| AIN — Atenció Intermèdia | ATENCIÓ INTERMÈDIA | ✅ Carregat (afegit als 59 issues reals ja existents, sense tocar-los) |
+| SI — Sistemes Informació | SISTEMES D'INFORMACIÓ | ✅ Carregat (afegit als ~45 issues existents, sense tocar-los) |
 
-**7 línies del pla encara no tenen espai a Jira** i per tant no s'han pogut carregar: Atenció al Ciutadà, Cronicitat, Farmàcia, Comunicació, Salut Pública, Gènere, Gerència.
+**7 línies del pla encara no tenen espai a Jira** i per tant no s'han pogut carregar: Atenció al Ciutadà, Cronicitat, Farmàcia, Comunicació, Salut Pública, Gènere, Gerència. No es crearan fins que algú amb permisos d'administrador creï els espais corresponents — l'eina de Jira disponible només permet crear issues dins de projectes ja existents, no projectes nous.
+
+### 1.1 AIN i SI: càrrega afegida, no fusionada
+
+AIN i SI ja tenien issues reals fets a mà abans d'aquesta càrrega (59 a AIN, ~45 a SI, alguns de prova evident a SI). El redactat d'aquests issues no coincideix literalment amb l'Excel, així que **no hi ha manera de fusionar-los automàticament** amb les files corresponents. L'usuari va confirmar explícitament que es carregués igualment tot el contingut de l'Excel, sabent que els issues nous conviuen AL COSTAT dels existents (no els substitueixen ni els fusionen). Verificat per recompte exacte abans/després que no s'ha tocat cap issue preexistent: AIN 59→157, SI 45→78.
 
 ## 2. Resultat numèric
 
-| Espai | Projectes creats | Accions creades | Total issues | Comentaris "Revisió" |
+| Espai | Projectes creats | Accions creades | Comentaris "Revisió" | Nota |
 |---|---|---|---|---|
-| AH | 33 | 86 | 119 | 2 |
-| APR | 32 | 127 | 159 | 2 |
-| ASM | 20 | 82 | 102 | 3 |
-| CIF | 3 | 3 | 6 | 2 |
-| **Total** | **88** | **298** | **386** | **9** |
+| AH | 33 | 86 | 2 | Espai buit abans de carregar |
+| APR | 32 | 127 | 2 | Espai buit abans de carregar |
+| ASM | 20 | 82 | 3 | Espai buit abans de carregar |
+| CIF | 3 | 3 | 2 | Espai buit abans de carregar; línia pilot |
+| AIN | 18 | 80 | 1 | Afegit a 59 issues existents (no tocats) |
+| SI | 11 | 22 | 6 | Afegit a ~45 issues existents (no tocats) |
+| **Total** | **117** | **400** | **16** | |
 
 ## 3. Neteja prèvia de l'Excel
 
@@ -63,6 +69,9 @@ El "rollup" d'estat del Projecte es calcula sobre les seves Accions: si alguna �
 - **APR fila 100**: "1/1//2026" interpretat com 2026-01-01.
 - **AH i APR completes**: cap fila tenia la columna ESTAT emplenada → tots els issues han quedat a "Planificat" per defecte. No és un error de càrrega, reflecteix que l'Excel encara no s'actualitza amb estats reals en aquestes dues línies.
 - **2 issues de prova a AH** (creats per l'Elisa mentre es dissenyava l'esquema) s'han marcat "Nevera" amb un comentari, ja que les eines disponibles no permeten esborrar issues — cal eliminar-los manualment des de la interfície.
+- **AIN, fila 43**: la columna LÍNIA estava buida (únic cas en aquest full); se li ha assignat "L3 · Atenció Intermèdia" com a la resta del full.
+- **SI, "Actualització QC Pla de Treball 2026"**: dues files amb el mateix nom de projecte però amb un espai doble de diferència han generat dos issues "Projecte" bessons ([SI-51](https://rsbmn.atlassian.net/browse/SI-51) i [SI-53](https://rsbmn.atlassian.net/browse/SI-53)) en lloc d'un de sol — es poden fusionar manualment si es vol.
+- A AIN i SI, algunes crides van patir timeouts temporals de connexió amb Jira; cada cas es va verificar per JQL abans de continuar, sense duplicats ni pèrdues (recompte final exacte).
 
 ## 6. Verificació
 
@@ -72,7 +81,7 @@ No s'ha vist cap necessitat de fer servir el tipus "Subtasca": cada fila de l'Ex
 
 ## 7. Pendent
 
-- Decidir si es creen els 7 espais que falten (Atenció al Ciutadà, Cronicitat, Farmàcia, Comunicació, Salut Pública, Gènere, Gerència).
+- Crear (un administrador de Jira) els 7 espais que falten: Atenció al Ciutadà, Cronicitat, Farmàcia, Comunicació, Salut Pública, Gènere, Gerència. Un cop existeixin, carregar-hi el pla de la mateixa manera.
 - Esborrar manualment els 2 issues de prova d'AH marcats "Nevera".
 - Corregir a l'Excel font: la data d'AH-43, i (opcionalment) la numeració d'objectius de Salut Mental.
-- Revisar AIN i SI (no tocats en aquesta càrrega) per decidir si cal completar-los amb la resta de files de l'Excel.
+- Valorar si cal fusionar manualment els issues bessons detectats a AIN i SI (variants d'espais en el nom del projecte).
