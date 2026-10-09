@@ -172,13 +172,27 @@
   .totals-bar div{height:100%}
 
   footer{padding-block:26px 40px; color:var(--muted); font-size:.82rem; border-top:1px solid var(--line); margin-top:10px}
+  /* figures with real screenshots */
+  .fig{margin:14px 0 4px; border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--surface)}
+  .fig img{display:block; width:100%; height:auto}
+  .fig figcaption{padding:8px 12px; font-size:.78rem; color:var(--ink-2); border-top:1px solid var(--line); display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+  .fig .real{font-size:.66rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--accent-ink); background:var(--accent); padding:2px 7px; border-radius:999px}
+  .fig.narrow{max-width:360px}
+  .freq{display:inline-block; font-size:.68rem; font-weight:700; padding:2px 8px; border-radius:999px; border:1px solid var(--line); background:var(--surface-2); color:var(--ink-2); white-space:nowrap; vertical-align:middle}
+  .freq.d{background:var(--accent-soft); color:var(--accent); border-color:transparent}
+  .agenda td:first-child{white-space:nowrap; font-variant-numeric:tabular-nums; font-weight:700; color:var(--accent)}
+  .agenda td:nth-child(2){color:var(--muted); font-size:.8rem; white-space:nowrap}
+  .benefit{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-top:12px}
+  .benefit .b{padding:14px; border-radius:12px; background:var(--surface-2)}
+  .benefit .b strong{display:block; margin-bottom:4px}
+  .benefit .b p{margin:0; font-size:.86rem; color:var(--ink-2)}
   kbd{display:inline-block;padding:1px 7px;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;background:var(--surface);font:600 .85em ui-monospace,monospace;}
 </style>
 
 <header class="hero">
   <p class="eyebrow">Pla de Treball Metro Nord 2026 · Jira</p>
   <h1>Guia dels espais de Jira de la RSBMN</h1>
-  <p>Una referència per a qualsevol professional que treballi amb el Pla de Treball a Jira: què omplir, on mirar, i com està anant cada línia ara mateix. Dades del quadre de comandament actualitzades el 9 d'octubre de 2026.</p>
+  <p>Una referència per a qualsevol professional que treballi amb el Pla de Treball a Jira: què omplir, on mirar, quins correus rebràs, com és la formació d'arrencada, i com està anant cada línia ara mateix. Dades del quadre de comandament actualitzades el 9 d'octubre de 2026.</p>
 </header>
 
 <nav class="tabs" id="tabs">
@@ -186,6 +200,9 @@
   <button data-tab="camps">Camps per tipus</button>
   <button data-tab="pantalles">Pantalles de l'espai</button>
   <button data-tab="filtres">Filtres per vista</button>
+  <button data-tab="elements">Elements útils</button>
+  <button data-tab="notificacions">Notificacions</button>
+  <button data-tab="formacio">Formació 2h</button>
   <button data-tab="pendent">Configurar ara</button>
   <button data-tab="dashboard">Quadre de comandament</button>
 </nav>
@@ -380,6 +397,10 @@
 
     <div class="card screen-card">
       <h3>Tauler</h3>
+      <figure class="fig narrow">
+        <img src="img/tauler-ain.png" alt="Tauler de l'espai Atenció Intermèdia a Jira: columna Planificat amb targetes d'accions, data de venciment, projecte pare i botó + al peu" loading="lazy">
+        <figcaption><span class="real">Captura real</span> Espai AIN, columna Planificat. Cada targeta mostra títol, venciment (vermell si ha passat), Projecte pare i assignat.</figcaption>
+      </figure>
       <div class="when">Vista en columnes per estat — arrossega una fitxa per canviar-ne l'estat.</div>
       <div class="mock"><div class="bar"><span class="dot"></span>Tauler</div><div class="body">
         <div class="board">
@@ -495,6 +516,207 @@
   </div>
 </section>
 
+<!-- ============ ELEMENTS ÚTILS ============ -->
+<section class="panel" id="panel-elements" hidden>
+  <div class="stack">
+    <div class="card">
+      <h2 style="margin-top:0">Què fa servir de debò un professional</h2>
+      <p>Jira té desenes de funcions. Per gestionar el Pla de Treball en calen poques i ben apreses. Aquest catàleg les ordena per freqüència d'ús real: el que es toca cada dia, el que es toca cada setmana i el que només fa servir qui coordina una línia. La formació de 2 hores cobreix els blocs "cada dia" i "cada setmana"; el bloc "coordinació" es fa en una sessió curta a part per als responsables de línia.</p>
+      <div class="benefit">
+        <div class="b"><strong>Una sola font de veritat</strong><p>S'acaben les versions de l'Excel per correu. L'estat d'una acció és el que diu la fitxa, i tothom veu el mateix.</p></div>
+        <div class="b"><strong>Cadascú veu només el seu</strong><p>El filtre "Assignat a mi" converteix 600 fitxes en la teva llista de 10 o 15. La resta no et molesta.</p></div>
+        <div class="b"><strong>Traçabilitat sense esforç</strong><p>Cada canvi d'estat i cada comentari queden datats i signats. L'historial de la fitxa substitueix els correus de "com està això?".</p></div>
+        <div class="b"><strong>Recordatoris que arriben sols</strong><p>Jira avisa per correu quan una acció venç o fa un mes que no es mou. No cal que ningú persegueixi ningú.</p></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">Cada dia <span class="freq d">5 elements</span></h3>
+      <p class="muted" style="margin-top:0">Els que ha de dominar tothom en sortir de la formació. Si només s'aprèn això, el pilot ja funciona.</p>
+      <div class="table-wrap"><table>
+        <tr><th>#</th><th>Element</th><th>Per a què</th><th>On és</th></tr>
+        <tr><td>1</td><td><strong>Assignat a mi</strong></td><td>Veure només les teves fitxes, a qualsevol vista. És la pantalla d'inici de cada professional.</td><td>Botó amb el teu avatar al costat de "Buscar" (a dalt de cada vista), o filtre "Persona asignada = jo" a Llista.</td></tr>
+        <tr><td>2</td><td><strong>Canviar l'estat</strong></td><td>Dir on és la feina: Planificat → En curs → Finalitzat (o Nevera si s'atura). És l'única dada que el quadre de comandament necessita de tu.</td><td>Desplegable d'estat a la fitxa, o arrossegar la targeta entre columnes al Tauler.</td></tr>
+        <tr><td>3</td><td><strong>Comentar</strong></td><td>Deixar constància d'un avenç, un bloqueig o una decisió. Amb <strong>@nom</strong> la persona rep un correu. Substitueix el correu intern.</td><td>Part inferior de la fitxa, caixa "Afegir un comentari".</td></tr>
+        <tr><td>4</td><td><strong>Crear amb la tecla <kbd>C</kbd></strong></td><td>Alta d'una Acció o d'un Projecte nou amb tots els camps. Mètode estàndard a tots els espais.</td><td>Tecla <kbd>C</kbd> o botó "Crear" de la barra superior, des de qualsevol vista.</td></tr>
+        <tr><td>5</td><td><strong>Cerca ràpida</strong></td><td>Trobar una fitxa pel títol o la clau (AIN-123) sense navegar.</td><td>Lupa de la barra superior (tota la instància) o "Buscar tablero" (només l'espai).</td></tr>
+      </table></div>
+      <figure class="fig narrow">
+        <img src="img/estats-desplegable.png" alt="Desplegable d'estats d'una fitxa a Jira: En curs seleccionat, opcions Nevera, Planificat i Finalitzat" loading="lazy">
+        <figcaption><span class="real">Captura real</span> El desplegable d'estat d'una fitxa. Un clic i la fitxa canvia de columna al Tauler i de color al quadre de comandament.</figcaption>
+      </figure>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">Cada setmana <span class="freq">6 elements</span></h3>
+      <p class="muted" style="margin-top:0">Per planificar-se la setmana i no deixar que res venci sense adonar-se'n.</p>
+      <div class="table-wrap"><table>
+        <tr><th>#</th><th>Element</th><th>Per a què</th><th>On és</th></tr>
+        <tr><td>6</td><td><strong>Llista amb filtres</strong></td><td>Veure les fitxes com a taula: filtrar per Sector, Nivell de prioritat i Assignat, ordenar per venciment. És la vista de treball dels qui gestionen més d'un projecte.</td><td>Pestanya "Lista" de l'espai → botó "Filtro" i capçaleres de columna per ordenar.</td></tr>
+        <tr><td>7</td><td><strong>Calendari</strong></td><td>Veure els venciments del mes d'un cop d'ull i detectar setmanes saturades.</td><td>Pestanya "Calendario". Les fitxes sense data de venciment no hi surten: motiu de més per omplir-la.</td></tr>
+        <tr><td>8</td><td><strong>Cronograma</strong></td><td>Veure els Projectes com a barres de temps amb les seves Accions a dins. Útil per explicar la línia a algú en una reunió.</td><td>Pestanya "Cronograma". Arrossegar els extrems d'una barra canvia les dates.</td></tr>
+        <tr><td>9</td><td><strong>Observar una fitxa</strong></td><td>Rebre correu de tot el que passi en una fitxa que no és teva però t'afecta (p. ex. una acció d'un altre sector de la qual depens).</td><td>Icona de l'ull a la part superior dreta de la fitxa.</td></tr>
+        <tr><td>10</td><td><strong>Adjuntar o enllaçar</strong></td><td>Penjar l'acta, l'informe o l'enllaç a la carpeta compartida directament a la fitxa, perquè qui la llegeixi tingui el context sencer.</td><td>Botó "Adjuntar" o icona del clip a la fitxa; "Enllaç web" per a documents al núvol.</td></tr>
+        <tr><td>11</td><td><strong>Agrupar el Tauler</strong></td><td>Veure el Tauler per persona (qui té què) o per prioritat (què és urgent). Columnes més curtes i cada grup amb el seu botó de crear.</td><td>Botó "Grupo" a dalt del Tauler → Persona asignada o Nivell de prioritat.</td></tr>
+      </table></div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">Coordinació de línia <span class="freq">5 elements</span></h3>
+      <p class="muted" style="margin-top:0">Per a qui respon d'un espai sencer (Mireia, Maria Salut, Alba, Elisa, Kilian). No cal explicar-ho a tothom.</p>
+      <div class="table-wrap"><table>
+        <tr><th>#</th><th>Element</th><th>Per a què</th><th>On és</th></tr>
+        <tr><td>12</td><td><strong>Resum de l'espai</strong></td><td>Gràfics automàtics: fitxes per estat, per assignat, per prioritat, vençudes. La foto de la línia per a una reunió de seguiment.</td><td>Pestanya "Resumen" de l'espai.</td></tr>
+        <tr><td>13</td><td><strong>Filtres desats</strong></td><td>Guardar una cerca ("Accions del Maresme que vencen aquest trimestre") per no reconstruir-la cada setmana i poder subscriure-s'hi per correu.</td><td>Menú superior "Filtros" → "Ver todas las incidencias" → construir la cerca → "Guardar como".</td></tr>
+        <tr><td>14</td><td><strong>Subscripció per correu a un filtre</strong></td><td>Rebre cada dilluns la llista d'un filtre desat al correu, sense entrar a Jira. És el "recordatori d'estat" més senzill que existeix.</td><td>Al filtre desat → "Detalles" → "Nueva suscripción" → dia i hora.</td></tr>
+        <tr><td>15</td><td><strong>Exportar a Excel</strong></td><td>Treure la Llista filtrada a CSV/Excel per a un informe o per a qui encara no entra a Jira.</td><td>Vista Llista → menú "···" → "Exportar".</td></tr>
+        <tr><td>16</td><td><strong>Quadre de comandament RSBMN</strong></td><td>Visió transversal dels 6 espais: totals, en curs, vençudes. És l'última pestanya d'aquesta guia i es regenera des de l'API.</td><td>Pestanya "Quadre de comandament" d'aquesta guia.</td></tr>
+      </table></div>
+    </div>
+
+    <div class="note"><strong>El que NO fem servir al pilot</strong> (i no cal aprendre): sprints, punts d'història, fulls de temps, components, versions, taulers personalitzats. Si algú ho troba pel menú, que ho ignori. Es revisarà al final del pilot si alguna cosa d'això aporta valor.</div>
+  </div>
+</section>
+
+<!-- ============ NOTIFICACIONS ============ -->
+<section class="panel" id="panel-notificacions" hidden>
+  <div class="stack">
+    <div class="card">
+      <h2 style="margin-top:0">Correus que recorden la situació de la feina</h2>
+      <p>L'objectiu és que ningú hagi d'entrar a Jira "per si de cas". Jira ha d'avisar quan cal actuar, i només llavors. Això es configura en quatre nivells, de menys a més abast. Els nivells 1 i 4 els fa cada persona en 5 minuts (s'ensenyen a la formació); els nivells 2 i 3 els configura l'administrador de cada espai una sola vegada.</p>
+      <div class="note" style="margin-top:12px"><strong>Principi:</strong> poc correu i rellevant. Si una persona rep més de 3 o 4 correus de Jira a la setmana sense que cap li demani una acció, la configuració està malament. Es revisa a la segona setmana del pilot.</div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">Nivell 1 · El meu perfil <span class="freq d">cada usuari · 2 minuts</span></h3>
+      <p>Avatar (a dalt a la dreta) → <strong>Configuración personal</strong> → <strong>Notificaciones por correo</strong>. Deixar-ho així:</p>
+      <div class="table-wrap"><table>
+        <tr><th>Opció</th><th>Estat</th><th>Per què</th></tr>
+        <tr><td>Em assignen una fitxa</td><td><span class="pill req">activat</span></td><td>És feina nova per a tu. Sempre.</td></tr>
+        <tr><td>Em mencionen (@nom)</td><td><span class="pill req">activat</span></td><td>Algú et demana alguna cosa explícitament.</td></tr>
+        <tr><td>Comentaris a fitxes que observo o que tinc assignades</td><td><span class="pill req">activat</span></td><td>És la conversa de la teva feina.</td></tr>
+        <tr><td>Els meus propis canvis</td><td><span class="pill opt">desactivat</span></td><td>No cal que Jira et digui el que acabes de fer.</td></tr>
+        <tr><td>Resum per correu (digest) en lloc d'un correu per acció</td><td><span class="pill rec">activat si surt l'opció</span></td><td>Agrupa les notificacions del dia en un sol correu.</td></tr>
+      </table></div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">Nivell 2 · Esdeveniments de l'espai <span class="freq">administrador · 1 cop per espai</span></h3>
+      <p><strong>Configuració de l'espai → Notificaciones</strong>. Defineix qui rep correu quan passa cada cosa dins l'espai. Proposta idèntica per als 6 espais:</p>
+      <div class="table-wrap"><table>
+        <tr><th>Quan passa…</th><th>Rep correu</th><th>No rep</th></tr>
+        <tr><td>Es crea una fitxa</td><td>Responsable de la línia</td><td>Tothom més</td></tr>
+        <tr><td>S'assigna una fitxa</td><td>La persona assignada</td><td>Responsable, informador</td></tr>
+        <tr><td>Algú comenta</td><td>Assignat, informador, observadors</td><td>Responsable (si no observa)</td></tr>
+        <tr><td>Canvia l'estat (transició)</td><td>Informador, responsable de la línia</td><td>Observadors</td></tr>
+        <tr><td>Es finalitza o es posa a Nevera</td><td>Informador, responsable de la línia</td><td></td></tr>
+        <tr><td>S'edita qualsevol camp (actualització)</td><td>Ningú</td><td>Tothom: és la font de soroll principal</td></tr>
+      </table></div>
+      <p class="muted" style="margin-top:10px">Nota operativa: mentre es facin les assignacions en bloc pendents (APR, ASM, AH, SI, CIF), l'esdeveniment "S'assigna una fitxa" es pot desactivar temporalment per no enviar centenars de correus, i tornar-lo a activar després.</p>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">Nivell 3 · Recordatoris automàtics de situació <span class="freq">administrador · regles d'automatització</span></h3>
+      <p>Aquest és el nivell que respon a "recordar la situació": correus programats que surten sols segons l'estat i les dates de les fitxes. Es creen a <strong>Configuració de l'espai → Automatización → Crear regla</strong>, amb activador "Programado" (JQL) i acció "Enviar correo electrónico". Cinc regles, les mateixes a cada espai:</p>
+      <div class="table-wrap"><table>
+        <tr><th>Regla</th><th>Quan</th><th>Condició (JQL)</th><th>A qui</th><th>Missatge</th></tr>
+        <tr><td><strong>R1 · Venç aquesta setmana</strong></td><td>Dilluns 08:00</td><td><code>due &lt;= 7d AND due &gt;= now() AND status NOT IN (Finalitzat, Nevera)</code></td><td>Assignat</td><td>"Tens N accions que vencen abans de diumenge" + llista amb enllaços.</td></tr>
+        <tr><td><strong>R2 · Vençuda</strong></td><td>Dilluns 08:05</td><td><code>due &lt; now() AND status NOT IN (Finalitzat, Nevera)</code></td><td>Assignat + responsable de línia</td><td>"Accions amb data passada: actualitza l'estat, mou la data o posa-la a Nevera."</td></tr>
+        <tr><td><strong>R3 · En curs sense moviment</strong></td><td>Dia 1 de cada mes</td><td><code>status = "En curs" AND updated &lt;= -30d</code></td><td>Assignat</td><td>"Fa més de 30 dies que no toques aquesta acció. Segueix en curs? Comenta-ho."</td></tr>
+        <tr><td><strong>R4 · Hauria d'haver començat</strong></td><td>Dia 1 de cada mes</td><td><code>status = Planificat AND "Fecha de inicio" &lt;= now()</code></td><td>Assignat</td><td>"La data d'inici ja ha passat i segueix Planificat. Passa-la a En curs o replanifica." Equival a la marca REVISIÓ de l'Excel.</td></tr>
+        <tr><td><strong>R5 · Sense responsable</strong></td><td>Dilluns 08:10</td><td><code>assignee IS EMPTY AND status != Nevera</code></td><td>Responsable de línia</td><td>"Fitxes de la teva línia sense persona assignada." Hauria de quedar a zero quan els camps obligatoris estiguin actius.</td></tr>
+      </table></div>
+      <div class="note" style="margin-top:12px"><strong>Dues precaucions.</strong> (1) Les regles d'automatització tenen un límit d'execucions mensuals segons el pla d'Atlassian contractat: per això són setmanals i mensuals, no diàries. Comprova el comptador a Configuració del lloc → Automatización → Uso. (2) Una regla creada des de l'espai només actua sobre aquell espai: cal repetir-la als 6, o crear-la com a regla global des de l'administració del lloc, que és el que recomano si tens permís.</div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">Nivell 4 · El meu resum setmanal <span class="freq d">cada usuari · 3 minuts</span></h3>
+      <p>Independent de les regles de l'administrador: cada persona es pot enviar a si mateixa, cada dilluns, la llista de les seves accions obertes. És la manera més robusta de "recordar la situació" perquè no depèn de ningú més.</p>
+      <ol class="steps">
+        <li><div><strong>Barra superior → Filtros → Ver todas las incidencias</strong><p>Enganxa aquesta cerca: <code>assignee = currentUser() AND status NOT IN (Finalitzat, Nevera) ORDER BY due ASC</code></p></div></li>
+        <li><div><strong>Guardar como → "Les meves accions obertes"</strong><p>Queda al teu menú "Filtros" per sempre.</p></div></li>
+        <li><div><strong>Detalles → Nueva suscripción</strong><p>Destinatari: tu. Freqüència: setmanal, dilluns, 08:00. Marca "No enviar si no hi ha resultats".</p></div></li>
+      </ol>
+      <p class="muted">El responsable de línia fa el mateix amb <code>project = XXX AND status NOT IN (Finalitzat, Nevera) AND due &lt; now()</code> per rebre cada setmana les vençudes de tot l'espai.</p>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">Qui rebrà què, en una setmana normal</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Persona</th><th>Dilluns</th><th>Durant la setmana</th><th>Dia 1 de mes</th></tr>
+        <tr><td><strong>Professional</strong> amb 12 accions</td><td>1 correu R1 (si en venç alguna) + 1 resum setmanal propi</td><td>Només si l'assignen, el mencionen o comenten una fitxa seva</td><td>R3 i R4 només si té accions encallades</td></tr>
+        <tr><td><strong>Responsable de línia</strong></td><td>R2 (vençudes de la línia), R5 (sense assignar), resum propi</td><td>Altes i canvis d'estat de la línia</td><td>Res addicional</td></tr>
+        <tr><td><strong>Oficina Tècnica</strong> (Elisa, Kilian)</td><td>Subscripció al quadre general (vençudes de tots els espais)</td><td>Només mencions</td><td>Revisió del comptador d'automatitzacions</td></tr>
+      </table></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FORMACIÓ ============ -->
+<section class="panel" id="panel-formacio" hidden>
+  <div class="stack">
+    <div class="card">
+      <h2 style="margin-top:0">Formació d'arrencada del pilot · 2 hores</h2>
+      <p>Formadors: Elisa i Kilian. Format: sessió única, cada assistent amb el seu ordinador i sessió iniciada a Jira. Es treballa sobre les fitxes reals de cadascú, no sobre dades de prova: en sortir, la feina feta durant la sessió ja és feina real del pla. Grups de 8 a 12 persones com a màxim perquè els exercicis siguin acompanyats.</p>
+      <div class="benefit">
+        <div class="b"><strong>Objectiu 1</strong><p>Que tothom surti havent canviat un estat, escrit un comentari i creat una Acció amb la tecla C a les seves fitxes reals.</p></div>
+        <div class="b"><strong>Objectiu 2</strong><p>Que tothom tingui configurat el perfil de notificacions i la subscripció setmanal pròpia.</p></div>
+        <div class="b"><strong>Objectiu 3</strong><p>Que tothom sàpiga on és la guia i a qui preguntar.</p></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">Prerequisits (Oficina Tècnica, la setmana abans)</h3>
+      <ul class="checklist">
+        <li><span class="box"></span><div>Usuari de Jira actiu i amb accés al seu espai per a cada assistent (prova d'accés enviada per correu 3 dies abans).</div></li>
+        <li><span class="box"></span><div>Assignacions en bloc fetes a tots els espais: sense això, l'exercici 1 surt buit.</div></li>
+        <li><span class="box"></span><div>Camps obligatoris (Sector, Prioritat, Persona assignada) actius a Projecte i Acció dels 6 espais, perquè l'exercici 2 ensenyi el formulari definitiu.</div></li>
+        <li><span class="box"></span><div>Notificacions d'espai (nivell 2) i regles de recordatori (nivell 3) configurades, per poder-les mostrar.</div></li>
+        <li><span class="box"></span><div>Estat Nevera en vermell i filtres per defecte a les vistes, per ensenyar la configuració final.</div></li>
+        <li><span class="box"></span><div>Enllaç a aquesta guia enviat amb la convocatòria. Projector o pantalla compartida amb l'espai AIN obert com a espai de demostració.</div></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">Agenda</h3>
+      <div class="table-wrap"><table class="agenda">
+        <tr><th>Hora</th><th>Durada</th><th>Bloc</th><th>Com es fa</th><th>Resultat observable</th></tr>
+        <tr><td>0:00</td><td>10'</td><td><strong>Per què canviem l'Excel per Jira</strong></td><td>Kilian. Tres diapositives: el problema (versions, "qui ho porta?", estat desconegut), la solució (una fitxa per acció, un estat, un responsable) i les regles del pilot (fins al 31/12; des de l'1/1/2027 és l'única via de petició d'informació).</td><td>Tothom entén que no és una eina més: és la substituta de l'Excel.</td></tr>
+        <tr><td>0:10</td><td>15'</td><td><strong>Tour guiat en viu</strong></td><td>Elisa, sobre l'espai AIN. Entrar, trobar l'espai, les 5 vistes en 2 minuts cadascuna, vocabulari Projecte / Acció / Estat, i on és el botó "Assignat a mi". Sense que ningú toqui res encara.</td><td>Els assistents reconeixen la pantalla quan la vegin sols.</td></tr>
+        <tr><td>0:25</td><td>20'</td><td><strong>Exercici 1 · La meva feina</strong></td><td>Cadascú al seu espai: activar "Assignat a mi", obrir una Acció pròpia, passar-la a "En curs" (si ho és de debò), escriure un comentari amb l'estat real i fer @menció al responsable de la línia. Els formadors passegen.</td><td>Cada assistent té 1 canvi d'estat i 1 comentari a l'historial.</td></tr>
+        <tr><td>0:45</td><td>20'</td><td><strong>Exercici 2 · Crear bé</strong></td><td>Tecla <kbd>C</kbd>: crear una Acció real que falti dins d'un Projecte propi, omplint els 4 obligatoris. Qui no en tingui cap de pendent, crea una amb el prefix "[PROVA]" i la posa a Nevera (Elisa les esborra l'endemà). Després trobar-la amb "Buscar tablero".</td><td>Cada assistent ha creat 1 fitxa completa i la sap localitzar.</td></tr>
+        <tr><td>1:05</td><td>10'</td><td><strong>Pausa</strong></td><td></td><td></td></tr>
+        <tr><td>1:15</td><td>20'</td><td><strong>Vistes per planificar-se</strong></td><td>Elisa. Llista amb filtres (Sector + Prioritat + ordenar per venciment), Calendari, Cronograma, Agrupar el Tauler per persona. Exercici 3 curt: "troba les accions del teu sector que vencen abans de final d'any".</td><td>Cada assistent sap respondre "què em venç aquest mes?" en menys d'un minut.</td></tr>
+        <tr><td>1:35</td><td>15'</td><td><strong>Notificacions</strong></td><td>Kilian. Cadascú configura el nivell 1 (perfil) i el nivell 4 (subscripció setmanal) en viu, pas a pas. Es mostra un correu de recordatori R1 real i s'explica què fer quan arriba.</td><td>Tothom té el perfil i la subscripció configurats. Saben interpretar els correus.</td></tr>
+        <tr><td>1:50</td><td>10'</td><td><strong>Tancament</strong></td><td>Regles del pilot (actualitzar estat quan canviï, comentar en lloc d'enviar correu, mai crear des del "+" del Tauler), canal de dubtes, data de la sessió de seguiment, enquesta de 3 preguntes.</td><td>Enquesta contestada abans de sortir.</td></tr>
+      </table></div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3 style="margin-top:0">Materials</h3>
+        <ul class="checklist">
+          <li><span class="box"></span><div>Aquesta guia (enllaç a la convocatòria i al tancament).</div></li>
+          <li><span class="box"></span><div>Les 3 diapositives d'obertura (presentació del repositori, actualitzada amb el calendari del pilot).</div></li>
+          <li><span class="box"></span><div>Full "xuleta" d'una cara per imprimir: els 5 elements de cada dia, la tecla C, els 4 camps obligatoris, els estats i què vol dir cadascun.</div></li>
+          <li><span class="box"></span><div>Enquesta de sortida: "Sabries fer-ho sol demà? (1-5)", "Què t'ha quedat menys clar?", "Quin correu de Jira et semblaria útil rebre?".</div></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Com sabrem que ha funcionat</h3>
+        <ul class="checklist">
+          <li><span class="box"></span><div><strong>Mateix dia:</strong> cada assistent té a l'historial 1 transició, 1 comentari i 1 fitxa creada (es comprova per JQL en acabar).</div></li>
+          <li><span class="box"></span><div><strong>Setmana 2:</strong> sessió de 30 minuts de dubtes. Indicador: % d'assistents que han tornat a entrar a Jira.</div></li>
+          <li><span class="box"></span><div><strong>Mensual durant el pilot:</strong> % de fitxes "En curs" actualitzades en els últims 30 dies, i nombre de fitxes vençudes sense comentari. Surten del quadre de comandament.</div></li>
+          <li><span class="box"></span><div><strong>Final del pilot (desembre):</strong> enquesta de satisfacció i decisió sobre els 7 espais que falten per crear.</div></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note"><strong>Sessió complementària per a responsables de línia (45 minuts, un altre dia):</strong> Resum de l'espai, filtres desats i subscripcions de la línia, exportació a Excel, lectura del quadre de comandament, i què fer amb els correus R2 i R5. Assistents: Mireia Rodríguez, Maria Salut Martínez, Alba Luna, Elisa Poses, Kilian Lansaque.</div>
+  </div>
+</section>
+
 <!-- ============ PENDENT (configuració manual) ============ -->
 <section class="panel" id="panel-pendent" hidden>
   <div class="stack">
@@ -520,6 +742,10 @@
 
     <div class="card">
       <h3 style="margin-top:0">3 · Camps obligatoris a Projecte i Acció</h3>
+      <figure class="fig">
+        <img src="img/config-tipus-projecte-ain.png" alt="Pantalla Configuració de l'espai → Tipus d'activitat → Projecte de l'espai AIN, amb Resum, Sector Sanitari RSBMN i Nivell de prioritat marcats com a obligatoris" loading="lazy">
+        <figcaption><span class="real">Captura real</span> AIN · Tipus d'activitat · Projecte. Això és el model a replicar als altres 5 espais, afegint-hi "Persona asignada" com a obligatori.</figcaption>
+      </figure>
       <p style="margin-bottom:10px">L'estàndard és el que ja té AIN per al tipus Projecte, més la persona assignada. Verificat per API el 9/10/2026: només AIN·Projecte el compleix (i encara li falta "Persona assignada"); els altres 5 espais i tots els tipus Acció només tenen "Resum" com a obligatori.</p>
       <ol class="steps">
         <li><div><strong>Abans de res: les assignacions</strong><p>AIN ja està fet per API (98 fitxes assignades a Kilian el 9/10/2026, sense cap correu perquè l'autor i l'assignat són la mateixa persona). Per a APR, ASM, AH, SI i CIF (290 fitxes sense assignar) hi ha dues vies: (a) Bulk Change manual amb "Enviar correu" desmarcat, o (b) desactivar temporalment la notificació "Issue assigned" a <em>Configuració de l'espai → Notificacions</em> de cada espai, avisar-me, i ho faig jo per API en minuts; després es torna a activar.</p></div></li>
