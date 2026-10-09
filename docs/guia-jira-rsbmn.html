@@ -7,7 +7,7 @@
     --ink:#10201c; --ink-2:#4a5a55; --muted:#7c8a85;
     --line:#dde3de; --accent:#0d6b5e; --accent-ink:#ffffff; --accent-soft:#e3f1ee;
     --good:#0ca30c; --warning:#c98500; --critical:#d03b3b; --neutral:#8b8f87;
-    --chip-planificat:#c3c2b7; --chip-encurs:#eda100; --chip-finalitzat:#0ca30c; --chip-nevera:#5a7a9e;
+    --series-1:#2a78d6; --chip-planificat:#c3c2b7; --chip-encurs:#eda100; --chip-finalitzat:#0ca30c; --chip-nevera:#5a7a9e;
     color-scheme: light;
   }
   @media (prefers-color-scheme: dark){
@@ -16,7 +16,7 @@
       --ink:#f2f5f3; --ink-2:#c4cdc9; --muted:#8d9994;
       --line:#2a332e; --accent:#3ea593; --accent-ink:#06130f; --accent-soft:#15302b;
       --good:#2fbf4f; --warning:#e0a633; --critical:#e66767; --neutral:#8b9690;
-      --chip-planificat:#555f58; --chip-encurs:#d6a13a; --chip-finalitzat:#2fbf4f; --chip-nevera:#5c85ad;
+      --series-1:#3987e5; --chip-planificat:#555f58; --chip-encurs:#d6a13a; --chip-finalitzat:#2fbf4f; --chip-nevera:#5c85ad;
       color-scheme: dark;
     }
   }
@@ -25,7 +25,7 @@
     --ink:#f2f5f3; --ink-2:#c4cdc9; --muted:#8d9994;
     --line:#2a332e; --accent:#3ea593; --accent-ink:#06130f; --accent-soft:#15302b;
     --good:#2fbf4f; --warning:#e0a633; --critical:#e66767; --neutral:#8b9690;
-    --chip-planificat:#555f58; --chip-encurs:#d6a13a; --chip-finalitzat:#2fbf4f; --chip-nevera:#5c85ad;
+    --series-1:#3987e5; --chip-planificat:#555f58; --chip-encurs:#d6a13a; --chip-finalitzat:#2fbf4f; --chip-nevera:#5c85ad;
     color-scheme: dark;
   }
 
@@ -201,6 +201,7 @@
   <button data-tab="pantalles">Pantalles de l'espai</button>
   <button data-tab="filtres">Filtres per vista</button>
   <button data-tab="elements">Elements útils</button>
+  <button data-tab="trucs">Trucs i IA</button>
   <button data-tab="notificacions">Notificacions</button>
   <button data-tab="formacio">Formació 2h</button>
   <button data-tab="pendent">Configurar ara</button>
@@ -578,6 +579,107 @@
   </div>
 </section>
 
+<!-- ============ TRUCS I IA ============ -->
+<section class="panel" id="panel-trucs" hidden>
+  <div class="stack">
+    <div class="card">
+      <h2 style="margin-top:0">Trucs que estalvien clics</h2>
+      <p>La tecla <kbd>C</kbd> és el més conegut, però Jira té una dotzena de dreceres i gestos que converteixen una fitxa en una cosa que es toca en segons. Prem <kbd>?</kbd> a qualsevol pantalla de Jira i surt la llista completa de dreceres d'aquella vista.</p>
+      <div class="grid-2">
+        <div>
+          <h3>Dreceres de teclat</h3>
+          <div class="table-wrap"><table>
+            <tr><th>Tecla</th><th>Fa</th></tr>
+            <tr><td><kbd>C</kbd></td><td>Crear una fitxa (formulari complet)</td></tr>
+            <tr><td><kbd>/</kbd></td><td>Saltar a la cerca de dalt</td></tr>
+            <tr><td><kbd>.</kbd></td><td>Dins d'una fitxa: menú d'accions ràpides (escriu "assignar", "etiqueta", "estat"…)</td></tr>
+            <tr><td><kbd>A</kbd></td><td>Assignar la fitxa oberta</td></tr>
+            <tr><td><kbd>I</kbd></td><td>Assignar-me-la a mi</td></tr>
+            <tr><td><kbd>M</kbd></td><td>Anar directe a escriure un comentari</td></tr>
+            <tr><td><kbd>E</kbd></td><td>Editar la fitxa</td></tr>
+            <tr><td><kbd>L</kbd></td><td>Editar etiquetes</td></tr>
+            <tr><td><kbd>J</kbd> / <kbd>K</kbd></td><td>A la Llista o la cerca: fitxa següent / anterior sense tocar el ratolí</td></tr>
+            <tr><td><kbd>O</kbd> o <kbd>Enter</kbd></td><td>Obrir la fitxa seleccionada</td></tr>
+            <tr><td><kbd>Ctrl</kbd>+<kbd>Enter</kbd></td><td>Desar el comentari que estàs escrivint</td></tr>
+            <tr><td><kbd>?</kbd></td><td>Veure totes les dreceres de la vista actual</td></tr>
+          </table></div>
+        </div>
+        <div>
+          <h3>Dins de la fitxa</h3>
+          <ul class="checklist">
+            <li><span class="box"></span><div><strong>@nom</strong> en un comentari: la persona rep correu i la fitxa li surt a "Mencionat". És la manera de demanar alguna cosa a algú sense enviar un correu a part.</div></li>
+            <li><span class="box"></span><div><strong>Escriu una clau (AIN-123)</strong> en qualsevol text i es converteix en enllaç viu amb l'estat de l'altra fitxa.</div></li>
+            <li><span class="box"></span><div><strong>Barra <kbd>/</kbd> dins la descripció o el comentari</strong> per inserir una taula, una data, un estat de colors, un "element d'acció" amb casella o una "decisió". Converteix un comentari en una acta.</div></li>
+            <li><span class="box"></span><div><strong>Enganxa una captura de pantalla</strong> directament al comentari (Ctrl+V). No cal desar-la abans.</div></li>
+            <li><span class="box"></span><div><strong>Markdown ràpid:</strong> <code>**negreta**</code>, <code>- </code> per a llistes, <code>#</code> per a títols. Funciona en escriure.</div></li>
+            <li><span class="box"></span><div><strong>Enllaça fitxes</strong> amb "bloqueja" o "depèn de" quan una Acció no pot avançar fins que una altra d'un altre espai acabi. Al Cronograma es veu com a dependència.</div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">Per organitzar-se</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Truc</th><th>Quan</th><th>Com</th></tr>
+        <tr><td><strong>Clonar un Projecte amb les seves Accions</strong></td><td>Un bloc de treball que es repeteix a cada sector o cada any</td><td>Fitxa del Projecte → "···" → Clonar → marcar "incloure fitxes filles". Després canvies Sector i dates.</td></tr>
+        <tr><td><strong>Editar diverses fitxes alhora</strong></td><td>Canviar el Sector, la prioritat o l'assignat a 20 accions d'un cop</td><td>Vista Llista → selecciona files amb la casella (Shift+clic per a un rang) → "Editar" a la barra que apareix.</td></tr>
+        <tr><td><strong>Marcador al navegador d'un filtre</strong></td><td>Les 3 o 4 cerques que fas cada setmana</td><td>Construeix la cerca, desa-la, i guarda l'URL als preferits. S'obre ja filtrada.</td></tr>
+        <tr><td><strong>App mòbil de Jira</strong></td><td>Canviar un estat o comentar des d'una reunió</td><td>Jira Cloud per a iOS/Android, mateix usuari. Les notificacions push substitueixen el correu si es prefereix.</td></tr>
+        <tr><td><strong>Jira dins d'Outlook i Teams</strong></td><td>Un correu que és una petició de feina</td><td>Complement "Jira Cloud for Outlook": crea la fitxa des del correu i hi adjunta el text. A Teams, enganxar un enllaç de fitxa mostra l'estat en viu.</td></tr>
+        <tr><td><strong>Crear per correu</strong></td><td>Peticions d'informació d'algú que no té Jira (objectiu de l'1/1/2027)</td><td>Cada espai pot tenir una adreça de correu que converteix els correus rebuts en fitxes. Configuració de l'espai → Peticions per correu electrònic.</td></tr>
+      </table></div>
+    </div>
+
+    <div class="card">
+      <h2 style="margin-top:0">Automatitzacions que milloren el seguiment</h2>
+      <p>A més de les 5 regles de recordatori de la pestanya "Notificacions", aquestes regles treuen feina mecànica a les persones i fan que l'estat del Projecte sigui coherent amb el de les seves Accions. Totes es creen a <strong>Configuració de l'espai → Automatización</strong> i es poden copiar entre espais (exportar / importar la regla).</p>
+      <div class="table-wrap"><table>
+        <tr><th>#</th><th>Regla</th><th>Activador</th><th>Acció</th><th>Benefici</th></tr>
+        <tr><td>A1</td><td><strong>El Projecte es tanca sol</strong></td><td>Una Acció passa a Finalitzat</td><td>Si totes les Accions germanes estan Finalitzat → el Projecte pare passa a Finalitzat</td><td>Ningú ha de recordar tancar el bloc. El quadre de comandament reflecteix la realitat.</td></tr>
+        <tr><td>A2</td><td><strong>El Projecte arrenca sol</strong></td><td>Una Acció passa a En curs</td><td>Si el Projecte pare és Planificat → passa a En curs</td><td>Mateixa coherència en l'altre sentit.</td></tr>
+        <tr><td>A3</td><td><strong>Data d'inici automàtica</strong></td><td>Una fitxa passa a En curs</td><td>Si "Fecha de inicio" és buida → s'omple amb avui</td><td>Dada real de quan va començar, sense que ningú l'escrigui.</td></tr>
+        <tr><td>A4</td><td><strong>Assignació per Sector</strong></td><td>Es crea una fitxa sense assignat</td><td>Taula Sector → responsable del sector; s'assigna automàticament</td><td>Res queda orfe. Útil quan les peticions entrin per correu.</td></tr>
+        <tr><td>A5</td><td><strong>Venciment coherent</strong></td><td>Canvia la data de venciment d'una Acció</td><td>Si és posterior a la del Projecte pare → s'allarga la del Projecte i es comenta</td><td>El Cronograma no menteix.</td></tr>
+        <tr><td>A6</td><td><strong>Botó "Demanar estat"</strong></td><td>Manual (botó a la fitxa)</td><td>Comentari automàtic "@assignat, pots actualitzar l'estat d'aquesta acció?"</td><td>El responsable de línia reclama en un clic i queda registrat.</td></tr>
+        <tr><td>A7</td><td><strong>Accions recurrents</strong></td><td>Programat (mensual, trimestral)</td><td>Crea l'Acció "Comitè operatiu · {{mes}}" dins el Projecte corresponent, assignada</td><td>Les reunions periòdiques del pla existeixen a Jira sense crear-les a mà.</td></tr>
+        <tr><td>A8</td><td><strong>Etiqueta "vençuda"</strong></td><td>Programat diari (una sola execució per dia)</td><td>Posa l'etiqueta a les obertes amb data passada; la treu si es mou la data o es tanca</td><td>Un filtre per etiqueta i un color al Tauler, sense càlculs.</td></tr>
+        <tr><td>A9</td><td><strong>Avís a Teams</strong></td><td>Qualsevol de les anteriors</td><td>Acció "Enviar missatge a Microsoft Teams" al canal de la línia</td><td>Per a equips que viuen a Teams i no al correu.</td></tr>
+      </table></div>
+      <div class="note" style="margin-top:12px"><strong>Ordre recomanat:</strong> A1 i A2 primer (coherència Projecte/Acció, cost zero per a l'usuari), després A3 i A8, i A4 quan s'obri l'entrada per correu. A7 només per als comitès que ja existeixen al pla. Compta les execucions: A8 diària consumeix 30 execucions al mes per espai.</div>
+    </div>
+
+    <div class="card">
+      <h2 style="margin-top:0">Intel·ligència artificial per al seguiment</h2>
+      <p>Hi ha dues capes. La primera és la IA que ja porta Jira (Atlassian Intelligence i Rovo), disponible segons el pla contractat: comprova-ho a Configuració del lloc → Atlassian Intelligence. La segona és la que ja estem fent servir per construir aquesta guia: un assistent connectat a Jira per API que llegeix els 6 espais i redacta.</p>
+      <div class="grid-2">
+        <div>
+          <h3>Dins de Jira (Atlassian Intelligence / Rovo)</h3>
+          <ul class="checklist">
+            <li><span class="box"></span><div><strong>Resumir una fitxa</strong>: botó "Resumir" a dalt dels comentaris. Un Projecte amb 40 comentaris es llegeix en 3 línies abans d'una reunió.</div></li>
+            <li><span class="box"></span><div><strong>Cerca en llenguatge natural</strong>: a la cerca avançada, escriu "accions del Maresme que vencen aquest mes i no estan finalitzades" i la IA ho tradueix a JQL. Elimina la barrera dels filtres.</div></li>
+            <li><span class="box"></span><div><strong>Desglossar un Projecte</strong>: "Suggerir fitxes filles" proposa les Accions a partir de la descripció del Projecte. S'accepten o es descarten una per una.</div></li>
+            <li><span class="box"></span><div><strong>Redactar i millorar</strong>: a la descripció o el comentari, "Millorar l'escriptura", "Resumir", "Canviar el to". Útil per convertir notes en una descripció clara.</div></li>
+            <li><span class="box"></span><div><strong>Crear automatitzacions descrivint-les</strong>: a Automatización, escriu "quan totes les accions d'un projecte estiguin finalitzades, finalitza el projecte" i la regla A1 es genera sola.</div></li>
+            <li><span class="box"></span><div><strong>Rovo Chat</strong>: preguntar "què té vençut la Maria Salut?" i obtenir la llista amb enllaços, des de qualsevol pantalla.</div></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Assistent connectat per API (el que fem aquí)</h3>
+          <ul class="checklist">
+            <li><span class="box"></span><div><strong>Informe setmanal automàtic</strong>: cada dilluns, lectura dels 6 espais i redacció d'un resum per línia (vençudes, sense moviment, finalitzades la setmana passada, fitxes noves) llest per enviar al comitè. Zero esforç humà.</div></li>
+            <li><span class="box"></span><div><strong>Auditoria de qualitat de dades</strong>: camps buits, dates incoherents (venciment abans d'inici), duplicats per redactat semblant (com SI-51 i SI-53), accions sense Projecte pare. Amb proposta de correcció.</div></li>
+            <li><span class="box"></span><div><strong>Quadre de comandament regenerat</strong>: les xifres i l'evolutiu d'aquesta guia s'actualitzen des de l'API, no a mà.</div></li>
+            <li><span class="box"></span><div><strong>Càrregues i canvis massius verificats</strong>: com la càrrega de 517 fitxes de l'Excel o les 98 assignacions d'AIN, amb recompte abans i després.</div></li>
+            <li><span class="box"></span><div><strong>Resposta a preguntes de seguiment</strong>: "quines accions de prioritat 1 no s'han tocat des de la càrrega?" es respon amb dades reals, no amb la memòria de ningú.</div></li>
+          </ul>
+          <div class="note" style="margin-top:10px">L'informe setmanal es pot deixar programat perquè arribi sol cada dilluns. Només cal decidir a qui s'envia i en quin format (correu, document, pestanya d'aquesta guia).</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ NOTIFICACIONS ============ -->
 <section class="panel" id="panel-notificacions" hidden>
   <div class="stack">
@@ -773,7 +875,7 @@
 
 <!-- ============ DASHBOARD ============ -->
 <section class="panel" id="panel-dashboard" hidden>
-  <p>Dades reals extretes de Jira el 9 d'octubre de 2026 — 623 fitxes en total als 6 espais actius.</p>
+  <p>Dades reals extretes de Jira el 9 d'octubre de 2026 — 624 fitxes en total als 6 espais actius.</p>
 
   <div class="legend">
     <span><i style="background:var(--chip-planificat)"></i>Planificat</span>
@@ -787,6 +889,36 @@
   <div class="card" style="margin-top:16px">
     <h3 style="margin-top:0">Conjunt dels 6 espais</h3>
     <div class="stat-row" id="dash-totals"></div>
+
+  <div class="card" style="margin-top:18px">
+    <h2 style="margin-top:0">Evolutiu <span class="freq">dades reals · 9 d'octubre de 2026</span></h2>
+    <p>Dues preguntes que el quadre estàtic no respon: <strong>quan venç la feina</strong> i <strong>què passa si ningú actualitza res</strong>. Totes dues surten de consultes JQL als 6 espais i es regeneren per API.</p>
+
+    <h3>1 · Accions obertes per període de venciment</h3>
+    <p class="muted" style="margin-top:0">Obertes = Planificat o En curs. 590 accions obertes en total; 171 ja tenen la data passada i 341 vencen al desembre.</p>
+    <svg viewBox="0 0 720 300" width="100%" role="img" aria-label="Accions obertes per període de venciment">
+<line x1="44" x2="704" y1="244.0" y2="244.0" stroke="var(--line)" stroke-width="1"/><text x="38" y="248.0" text-anchor="end" font-size="10" fill="var(--muted)">0</text><line x1="44" x2="704" y1="184.0" y2="184.0" stroke="var(--line)" stroke-width="1"/><text x="38" y="188.0" text-anchor="end" font-size="10" fill="var(--muted)">100</text><line x1="44" x2="704" y1="124.0" y2="124.0" stroke="var(--line)" stroke-width="1"/><text x="38" y="128.0" text-anchor="end" font-size="10" fill="var(--muted)">200</text><line x1="44" x2="704" y1="64.0" y2="64.0" stroke="var(--line)" stroke-width="1"/><text x="38" y="68.0" text-anchor="end" font-size="10" fill="var(--muted)">300</text><rect x="59.7" y="209.8" width="51.1" height="34.2" rx="3" fill="var(--critical)"/><text x="85.2" y="203.8" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">57</text><text x="85.2" y="262" text-anchor="middle" font-size="11" fill="var(--ink-2)">Gen–Mar</text><rect x="142.2" y="204.4" width="51.1" height="39.6" rx="3" fill="var(--critical)"/><text x="167.8" y="198.4" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">66</text><text x="167.8" y="262" text-anchor="middle" font-size="11" fill="var(--ink-2)">Abr–Jun</text><rect x="224.7" y="215.2" width="51.1" height="28.8" rx="3" fill="var(--critical)"/><text x="250.2" y="209.2" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">48</text><text x="250.2" y="262" text-anchor="middle" font-size="11" fill="var(--ink-2)">Jul–Set</text><rect x="307.2" y="239.8" width="51.1" height="4.2" rx="3" fill="var(--series-1)"/><text x="332.8" y="233.8" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">7</text><text x="332.8" y="262" text-anchor="middle" font-size="11" fill="var(--ink-2)">Oct</text><rect x="389.7" y="228.4" width="51.1" height="15.6" rx="3" fill="var(--series-1)"/><text x="415.2" y="222.4" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">26</text><text x="415.2" y="262" text-anchor="middle" font-size="11" fill="var(--ink-2)">Nov</text><rect x="472.2" y="39.4" width="51.1" height="204.6" rx="3" fill="var(--series-1)"/><text x="497.8" y="33.4" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">341</text><text x="497.8" y="262" text-anchor="middle" font-size="11" fill="var(--ink-2)">Des</text><rect x="554.7" y="232.6" width="51.1" height="11.4" rx="3" fill="var(--series-1)"/><text x="580.2" y="226.6" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">19</text><text x="580.2" y="262" text-anchor="middle" font-size="11" fill="var(--ink-2)">2027+</text><rect x="637.2" y="228.4" width="51.1" height="15.6" rx="3" fill="var(--neutral)"/><text x="662.8" y="222.4" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">26</text><text x="662.8" y="262" text-anchor="middle" font-size="11" fill="var(--ink-2)">Sense data</text>
+<line x1="44" x2="704" y1="244" y2="244" stroke="var(--line)"/>
+<text x="44" y="292" font-size="11" fill="var(--ink-2)"><tspan fill="var(--critical)" font-weight="700">■</tspan> ja vençudes (171)  <tspan fill="var(--series-1)" font-weight="700">■</tspan> encara dins de termini (393)  <tspan fill="var(--neutral)" font-weight="700">■</tspan> sense data (26)</text>
+</svg>
+
+    <h3 style="margin-top:22px">2 · Vençudes acumulades si no es mou cap estat</h3>
+    <p class="muted" style="margin-top:0">Projecció aritmètica: cada mes s'hi sumen les que vencen. Sense actualitzacions, el 31 de desembre hi hauria 545 accions vençudes de 624 (el 87%). Aquest és el gràfic que justifica la formació i els recordatoris.</p>
+    <svg viewBox="0 0 720 240" width="100%" role="img" aria-label="Accions vençudes acumulades si no s'actualitza cap estat">
+<line x1="44" x2="660" y1="200.0" y2="200.0" stroke="var(--line)"/><text x="38" y="204.0" text-anchor="end" font-size="10" fill="var(--muted)">0</text><line x1="44" x2="660" y1="141.3" y2="141.3" stroke="var(--line)"/><text x="38" y="145.3" text-anchor="end" font-size="10" fill="var(--muted)">200</text><line x1="44" x2="660" y1="82.7" y2="82.7" stroke="var(--line)"/><text x="38" y="86.7" text-anchor="end" font-size="10" fill="var(--muted)">400</text><line x1="44" x2="660" y1="24.0" y2="24.0" stroke="var(--line)"/><text x="38" y="28.0" text-anchor="end" font-size="10" fill="var(--muted)">600</text><path d="M44.0,149.8 L249.3,147.8 L454.7,140.2 L660.0,40.1 L660.0,200 L44.0,200 Z" fill="var(--critical)" opacity=".12"/><path d="M44.0,149.8 L249.3,147.8 L454.7,140.2 L660.0,40.1" fill="none" stroke="var(--critical)" stroke-width="2.5"/><circle cx="44.0" cy="149.8" r="4.5" fill="var(--critical)"/><text x="44.0" y="139.8" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">171</text><text x="44.0" y="218" text-anchor="middle" font-size="11" fill="var(--ink-2)">9 oct</text><circle cx="249.3" cy="147.8" r="4.5" fill="var(--critical)"/><text x="249.3" y="137.8" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">178</text><text x="249.3" y="218" text-anchor="middle" font-size="11" fill="var(--ink-2)">31 oct</text><circle cx="454.7" cy="140.2" r="4.5" fill="var(--critical)"/><text x="454.7" y="130.2" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">204</text><text x="454.7" y="218" text-anchor="middle" font-size="11" fill="var(--ink-2)">30 nov</text><circle cx="660.0" cy="40.1" r="4.5" fill="var(--critical)"/><text x="660.0" y="30.1" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">545</text><text x="660.0" y="218" text-anchor="middle" font-size="11" fill="var(--ink-2)">31 des</text>
+<text x="668" y="44.1" font-size="11" fill="var(--critical)" font-weight="700">87%</text>
+</svg>
+
+    <h3 style="margin-top:22px">3 · Activitat humana des de la càrrega</h3>
+    <div class="stat-row">
+      <div class="stat"><b>517</b><span>Fitxes carregades 22/9</span></div>
+      <div class="stat crit"><b>0</b><span>Fitxes modificades entre el 24/9 i el 8/10</span></div>
+      <div class="stat crit"><b>290</b><span>Fitxes sense persona assignada</span></div>
+      <div class="stat crit"><b>91%</b><span>Fitxes sense Nivell de prioritat</span></div>
+      <div class="stat"><b>50</b><span>Fitxes sense Sector</span></div>
+    </div>
+    <div class="note" style="margin-top:12px"><strong>Lectura:</strong> en les dues setmanes posteriors a la càrrega ningú va tocar cap fitxa. No és un problema de l'eina ni de les dades: encara no s'ha fet la formació, 3 de les 6 línies (APR, ASM i CIF) no tenen cap fitxa assignada, i gairebé cap fitxa té prioritat. Les regles R1 a R5 i els exercicis de la formació estan dissenyats per moure aquests números. És l'indicador de seguiment del pilot i s'actualitza cada setmana.</div>
+  </div>
   </div>
 </section>
 
@@ -796,14 +928,14 @@
 (function(){
   var data = {
     "projects": {
-      "AH":  {"name":"Atenció Hospitalària",      "total":121,"by_status":{"Planificat":119,"En curs":0,"Finalitzat":0,"Nevera":1},"overdue_open":22,"due_soon_30d":1},
-      "APR": {"name":"Atenció Primària",          "total":159,"by_status":{"Planificat":159,"En curs":0,"Finalitzat":0,"Nevera":0},"overdue_open":27,"due_soon_30d":0},
-      "ASM": {"name":"Atenció a la Salut Mental",  "total":102,"by_status":{"Planificat":91,"En curs":6,"Finalitzat":2,"Nevera":3},"overdue_open":27,"due_soon_30d":1},
+      "AH":  {"name":"Atenció Hospitalària",      "total":121,"by_status":{"Planificat":119,"En curs":0,"Finalitzat":0,"Nevera":2},"overdue_open":30,"due_soon_30d":1},
+      "APR": {"name":"Atenció Primària",          "total":159,"by_status":{"Planificat":159,"En curs":0,"Finalitzat":0,"Nevera":0},"overdue_open":32,"due_soon_30d":0},
+      "ASM": {"name":"Atenció a la Salut Mental",  "total":102,"by_status":{"Planificat":91,"En curs":6,"Finalitzat":2,"Nevera":3},"overdue_open":32,"due_soon_30d":1},
       "CIF": {"name":"Contractació i Facturació",  "total":6,  "by_status":{"Planificat":6,"En curs":0,"Finalitzat":0,"Nevera":0},"overdue_open":0,"due_soon_30d":0},
-      "AIN": {"name":"Atenció Intermèdia",         "total":157,"by_status":{"Planificat":99,"En curs":48,"Finalitzat":8,"Nevera":0},"overdue_open":38,"due_soon_30d":20},
-      "SI":  {"name":"Sistemes d'Informació",      "total":78, "by_status":{"Planificat":34,"En curs":0,"Finalitzat":0,"Nevera":1},"overdue_open":15,"due_soon_30d":3}
+      "AIN": {"name":"Atenció Intermèdia",         "total":158,"by_status":{"Planificat":101,"En curs":48,"Finalitzat":9,"Nevera":0},"overdue_open":48,"due_soon_30d":23},
+      "SI":  {"name":"Sistemes d'Informació",      "total":78, "by_status":{"Planificat":52,"En curs":8,"Finalitzat":15,"Nevera":3},"overdue_open":29,"due_soon_30d":3}
     },
-    "totals": {"total":623,"by_status":{"Planificat":508,"En curs":54,"Finalitzat":10,"Nevera":5},"overdue_open":129,"due_soon_30d":25}
+    "totals": {"total":624,"by_status":{"Planificat":528,"En curs":62,"Finalitzat":26,"Nevera":8},"overdue_open":171,"due_soon_30d":28}
   };
   var order = ["Planificat","En curs","Finalitzat","Nevera"];
   var colorVar = {"Planificat":"--chip-planificat","En curs":"--chip-encurs","Finalitzat":"--chip-finalitzat","Nevera":"--chip-nevera"};
