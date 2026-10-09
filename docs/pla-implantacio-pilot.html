@@ -105,7 +105,7 @@
 
 <nav class="idx" aria-label="Seccions">
   <a href="#diagnostic">Diagnòstic</a>
-  <a href="#decisions">Decisions pendents</a>
+  <a href="#decisions">Decisions</a>
   <a href="#ruta">Full de ruta</a>
   <a href="#indicadors">Indicadors</a>
   <a href="#formacio">Formació per línia</a>
@@ -128,7 +128,7 @@
       <tr><td><strong>AH</strong> Atenció Hospitalària</td><td>Alba Luna</td><td class="n">121</td><td class="n">0</td><td class="n">0</td><td class="n"><span class="pill crit">30</span></td><td class="n">1</td><td class="n"><span class="pill ok">2</span></td></tr>
       <tr><td><strong>ASM</strong> Salut Mental</td><td>Maria Salut Martínez</td><td class="n">102</td><td class="n">6</td><td class="n">2</td><td class="n"><span class="pill crit">32</span></td><td class="n">1</td><td class="n"><span class="pill crit">102</span></td></tr>
       <tr><td><strong>SI</strong> Sistemes d'Informació</td><td>Elisa Poses</td><td class="n">78</td><td class="n">8</td><td class="n">15</td><td class="n"><span class="pill crit">29</span></td><td class="n">3</td><td class="n"><span class="pill warn">21</span></td></tr>
-      <tr><td><strong>CIF</strong> Contractació i Facturació</td><td><span class="pill warn">sense definir</span></td><td class="n">6</td><td class="n">0</td><td class="n">0</td><td class="n">0</td><td class="n">0</td><td class="n"><span class="pill crit">6</span></td></tr>
+      <tr><td><strong>CIF</strong> Contractació i Facturació</td><td>Julia Valls</td><td class="n">6</td><td class="n">0</td><td class="n">0</td><td class="n">0</td><td class="n">0</td><td class="n"><span class="pill crit">6</span></td></tr>
       <tr><td><strong>Total</strong></td><td></td><td class="n"><strong>624</strong></td><td class="n"><strong>62</strong></td><td class="n"><strong>26</strong></td><td class="n"><strong>171</strong></td><td class="n"><strong>28</strong></td><td class="n"><strong>290</strong></td></tr>
     </table></div>
   </div>
@@ -139,10 +139,10 @@
       <tr><th>Gravetat</th><th>Troballa</th><th>Evidència</th><th>Què cal fer</th></tr>
       <tr><td><span class="pill crit">Alta</span></td><td><strong>Activitat zero després de la càrrega</strong></td><td>0 fitxes modificades entre el 24/9 i el 8/10 als 6 espais.</td><td>Formació per línia abans de novembre. Sense això, al desembre hi haurà 545 vençudes (87%).</td></tr>
       <tr><td><span class="pill crit">Alta</span></td><td><strong>Fitxes sense responsable</strong></td><td>290 de 624. APR, ASM i CIF no en tenen cap d'assignada.</td><td>Autoassignació amb la tecla <kbd>I</kbd> durant la formació: la persona que s'assigna no rep correu. L'informador de la càrrega (Kilian) sí que en pot rebre; es desactiva a les notificacions de l'espai durant les sessions.</td></tr>
-      <tr><td><span class="pill crit">Alta</span></td><td><strong>Prioritat buida</strong></td><td>566 fitxes (91%) sense Nivell de prioritat.</td><td>Omplir-la en l'exercici de la formació i activar-la com a obligatòria després de cada sessió.</td></tr>
+      <tr><td><span class="pill crit">Alta</span></td><td><strong>Prioritat buida</strong></td><td>566 fitxes (91%) sense Nivell de prioritat.</td><td>Omplir-la a l'exercici de la formació i activar-la com a obligatòria en acabar cada sessió (decisió 5).</td></tr>
       <tr><td><span class="pill warn">Mitjana</span></td><td><strong>Camps obligatoris desiguals</strong></td><td>Només AIN·Projecte té Sector i Prioritat obligatoris. Persona assignada no ho és enlloc.</td><td>Aplicar l'estàndard als 6 espais (12 pantalles), seguint "Configurar ara" de la guia.</td></tr>
       <tr><td><span class="pill warn">Mitjana</span></td><td><strong>Accés no segmentat per espai</strong></td><td>Els mateixos 14 usuaris poden ser assignats a qualsevol dels 6 espais.</td><td>Acceptable per al pilot (afavoreix la col·laboració). Decidir abans de l'1/1/2027 si cal restringir.</td></tr>
-      <tr><td><span class="pill warn">Mitjana</span></td><td><strong>CIF sense responsable</strong></td><td>6 fitxes sense assignar i cap persona de referència.</td><td>Nomenar responsable (pregunta 2).</td></tr>
+      <tr><td><span class="pill warn">Mitjana</span></td><td><strong>CIF sense responsable</strong></td><td>6 fitxes sense assignar i cap persona de referència.</td><td>Resolt: Julia Valls (decisió 2). Pendent l'accés d'en Carles (decisió 3).</td></tr>
       <tr><td><span class="pill info">Baixa</span></td><td><strong>Brossa de proves</strong></td><td>AH-1 i AH-2 a Nevera, fitxes de prova a SI ("rgegr", "dwq"), bessons SI-51 i SI-53.</td><td>Esborrar o fusionar a la fase 0. Distorsionen el quadre de comandament.</td></tr>
       <tr><td><span class="pill info">Baixa</span></td><td><strong>50 fitxes sense Sector</strong></td><td>Sector buit en 50 fitxes.</td><td>Completar a l'exercici de cada línia.</td></tr>
       <tr><td><span class="pill ok">Positiu</span></td><td><strong>IA disponible al lloc</strong></td><td>3 agents d'IA d'Atlassian (Triage, Delivery, Coding) apareixen com a usuaris assignables.</td><td>Confirmar el pla contractat i activar el resum de fitxes i la cerca en llenguatge natural.</td></tr>
@@ -154,36 +154,25 @@
 <!-- DECISIONS -->
 <section id="decisions">
   <div>
-    <h2>Decisions pendents (grilling, ronda 1)</h2>
-    <p>Aquestes són les decisions que només pot prendre la direcció. Cada una porta la meva recomanació, que és la que he fet servir per construir el full de ruta i la formació. Si en canvies alguna, ajusto el pla.</p>
+    <h2>Decisions preses</h2>
+    <p>Decidides per Kilian Lansaque el 9 d'octubre de 2026, després de la revisió de configuració. Són la base del full de ruta i de la formació.</p>
   </div>
-  <div class="card" style="display:flex; flex-direction:column; gap:18px">
-    <div class="q"><h3>1 · Desplegament: totes les línies alhora o escalonat?</h3>
-      <p>Formar les 6 línies la mateixa setmana o començar per les que ja tenen activitat (AIN i SI) i fer servir el que s'aprengui per a la resta.</p>
-      <div class="rec"><b>Recomanació:</b> escalonat en dues onades. AIN, SI i CIF la setmana del 26 d'octubre; AH, ASM i APR la del 2 de novembre. La primera onada detecta errors de la formació abans de les línies grans.</div></div>
-    <div class="q"><h3>2 · Qui és responsable de CIF?</h3>
-      <p>És l'única línia sense persona de referència. Sense responsable no rep els recordatoris R2 i R5 i ningú en respon al comitè.</p>
-      <div class="rec"><b>Recomanació:</b> l'Elisa n'és responsable provisional fins que la direcció nomeni algú. CIF passa a ser la línia de prova del repositori únic de peticions d'informació.</div></div>
-    <div class="q"><h3>3 · Com s'assignen les 290 fitxes sense responsable?</h3>
-      <p>Opcions: (a) la responsable de línia fa una edició massiva; (b) cada professional s'assigna les seves durant la formació; (c) Bulk Change amb el correu desactivat.</p>
-      <div class="rec"><b>Recomanació:</b> (b). Amb la tecla <kbd>I</kbd> cadascú s'assigna les fitxes del seu sector a l'exercici central. Jira no envia correu a qui fa l'acció, i la persona assumeix la fitxa en primera persona. Com que el Kilian és l'informador de les fitxes carregades, durant les sessions cal treure "Informador" de l'esdeveniment d'assignació a les notificacions de l'espai per no rebre centenars de correus. El que quedi orfe al final de la sessió ho assigna la responsable.</div></div>
-    <div class="q"><h3>4 · Quan es fan obligatoris Prioritat, Sector i Persona assignada?</h3>
-      <p>Ara mateix el 91% de fitxes no té prioritat. Activar l'obligatorietat abans d'omplir-la fa que cada fitxa existent reclami el camp en editar-la.</p>
-      <div class="rec"><b>Recomanació:</b> s'activa a cada espai el mateix dia de la seva formació, en acabar la sessió. L'exercici central ja haurà omplert les fitxes de cadascú.</div></div>
-    <div class="q"><h3>5 · Què es fa amb les 171 fitxes vençudes?</h3>
-      <p>Opcions: moure-les totes en bloc al 31 de desembre (ràpid però amaga la realitat) o revisar-les una per una.</p>
-      <div class="rec"><b>Recomanació:</b> revisió una per una a la formació, amb quatre sortides possibles: passar a En curs amb nova data, Finalitzat, Nevera amb comentari, o nova data amb comentari del motiu. Regla: ningú surt de la sessió amb una fitxa seva vençuda sense decisió.</div></div>
-    <div class="q"><h3>6 · Quin és el criteri de go / no-go del desembre?</h3>
-      <p>Cal decidir ara què vol dir "el pilot ha funcionat" per poder-ho mesurar sense discussió el 14 de desembre.</p>
-      <div class="rec"><b>Recomanació:</b> go si es compleixen 4 dels 5 objectius de la secció d'Indicadors. Si no, pròrroga d'un trimestre per a les línies que no arribin, sense aturar el repositori únic.</div></div>
-    <div class="q"><h3>7 · Qui configura Jira durant el pilot?</h3>
-      <p>Camps obligatoris, Nevera en vermell, notificacions i regles d'automatització són configuració manual als 6 espais.</p>
-      <div class="rec"><b>Recomanació:</b> l'Elisa com a administradora única de configuració, amb validació del Kilian. Després de cada canvi, auditoria per API dels 6 espais per confirmar que són idèntics.</div></div>
-    <div class="q"><h3>8 · Quina és la porta d'entrada de les peticions d'informació a partir de l'1/1/2027?</h3>
-      <p>Opcions: correu que crea fitxes automàticament, formulari de Jira, o Jira Service Management amb portal.</p>
-      <div class="rec"><b>Recomanació:</b> provar la creació per correu amb CIF al novembre i decidir al desembre amb dades de l'ús real. És la decisió que condiciona tot el 2027.</div></div>
+  <div class="card">
+    <div class="table-wrap"><table>
+      <tr><th>#</th><th>Decisió</th><th>Resolució</th><th>Conseqüència al pla</th></tr>
+      <tr><td>1</td><td><strong>Desplegament</strong></td><td><span class="pill ok">Dues onades</span></td><td>AIN, SI i CIF la setmana del 26/10. AH, ASM i APR la del 2/11.</td></tr>
+      <tr><td>2</td><td><strong>Responsable de CIF</strong></td><td><span class="pill ok">Julia Valls</span></td><td>Assignada per defecte a tot el que entri a CIF. Ho garanteix l'automatització A4 (assignació per defecte), que es crea a la fase 0.</td></tr>
+      <tr><td>3</td><td><strong>Accés d'en Carles (CIF)</strong></td><td><span class="pill warn">Convidar amb correu no corporatiu</span></td><td>L'administrador del lloc el convida des d'admin.atlassian.com. Només funciona si el lloc admet dominis externs i no força l'inici de sessió corporatiu (SSO). Ocupa una llicència. Si no és possible, la Julia registra la seva feina.</td></tr>
+      <tr><td>4</td><td><strong>Assignació de les 290 fitxes</strong></td><td><span class="pill ok">Autoassignació a la formació</span></td><td>Tecla <kbd>I</kbd> a l'exercici central. Les 6 de CIF se les assigna la Julia el dia de la seva sessió.</td></tr>
+      <tr><td>5</td><td><strong>Camps obligatoris</strong></td><td><span class="pill ok">En acabar cada formació</span></td><td>Sector, Nivell de prioritat i Persona assignada s'activen a cada espai el dia de la seva sessió.</td></tr>
+      <tr><td>6</td><td><strong>Les 171 vençudes</strong></td><td><span class="pill ok">Les revisa cada responsable al novembre</span></td><td>Surt de l'exercici de formació. Cada responsable decideix les de la seva línia durant el pilot actiu. Seguiment setmanal per API.</td></tr>
+      <tr><td>7</td><td><strong>Go / no-go</strong></td><td><span class="pill ok">4 de 5 indicadors</span></td><td>Es mesura l'11 de desembre. Pròrroga per línia si no s'hi arriba.</td></tr>
+      <tr><td>8</td><td><strong>Qui configura</strong></td><td><span class="pill warn">Cada responsable el seu espai</span></td><td>Risc de diferències entre espais. Mitigació: auditoria per API dels 6 espais després de la fase 0 i abans de cada formació.</td></tr>
+      <tr><td>9</td><td><strong>Permisos d'administració d'espai</strong></td><td><span class="pill warn">Per comprovar</span></td><td>Primera tasca de la fase 0: l'administrador del lloc dona rol d'administrador a cada responsable al seu espai.</td></tr>
+      <tr><td>10</td><td><strong>Peticions d'informació 2027</strong></td><td><span class="pill ok">Prova per correu a CIF</span></td><td>Adreça de correu que crea fitxes a CIF al novembre. Decisió definitiva al desembre amb dades d'ús.</td></tr>
+    </table></div>
   </div>
-  <p class="note"><strong>Fets que no he pogut verificar per API i cal confirmar:</strong> el pla d'Atlassian contractat (determina el límit d'execucions d'automatització i l'abast de la IA) i quines de les 14 persones amb accés pertanyen a cada línia. Amb la llista de persones per línia preparo les convocatòries.</p>
+  <p class="note"><strong>Encara pendent:</strong> el pla d'Atlassian contractat (determina el límit d'execucions d'automatització i l'abast de la IA) i quines de les 14 persones amb accés pertanyen a cada línia. Amb la llista de persones per línia preparo les convocatòries.</p>
 </section>
 
 <!-- RUTA -->
@@ -196,12 +185,13 @@
     <div class="phase"><div class="when">Fase 0<span>12 – 23 oct</span></div><div>
       <h3>Preparació</h3>
       <ul>
-        <li>Respondre les 8 decisions pendents i confirmar les persones de cada línia.</li>
-        <li>Configuració als 6 espais: Nevera en vermell, filtres per defecte, notificacions d'espai (nivell 2), regles R1–R5 i automatitzacions A1–A2 (Projecte es tanca i s'obre sol).</li>
+        <li>Comprovar i donar rol d'administrador de l'espai a cada responsable (decisió 9). Convidar en Carles si el lloc ho permet (decisió 3).</li>
+        <li>Confirmar les persones de cada línia i el pla d'Atlassian contractat.</li>
+        <li>Cada responsable configura el seu espai seguint la guia: Nevera en vermell, filtres per defecte, notificacions d'espai, regles R1–R5 i automatitzacions A1–A2. A CIF, a més, la regla A4 d'assignació per defecte a la Julia.</li>
         <li>Neteja: esborrar AH-1 i AH-2, fitxes de prova de SI, fusionar SI-51 i SI-53, data d'AH-43.</li>
         <li>Convocatòries enviades amb l'enllaç a la guia i prova d'accés.</li>
       </ul>
-      <p><strong>Resultat:</strong> auditoria per API amb configuració idèntica als 6 espais i 0 fitxes de prova.</p>
+      <p><strong>Resultat:</strong> auditoria per API que confirma que els 6 espais tenen la mateixa configuració, i 0 fitxes de prova. Les diferències es corregeixen abans de la formació de cada línia.</p>
     </div></div>
     <div class="phase"><div class="when">Fase 1<span>26 oct – 6 nov</span></div><div>
       <h3>Formació per línia</h3>
@@ -210,12 +200,13 @@
         <li>Onada 2 (2–6 nov): AH, ASM, APR, amb els ajustos de l'onada 1.</li>
         <li>En acabar cada sessió, s'activen els camps obligatoris d'aquell espai.</li>
       </ul>
-      <p><strong>Resultat:</strong> 0 fitxes sense assignar i 0 vençudes sense decisió a les línies formades.</p>
+      <p><strong>Resultat:</strong> 0 fitxes sense assignar, prioritat informada i camps obligatoris actius a les línies formades.</p>
     </div></div>
     <div class="phase"><div class="when">Fase 2<span>9 nov – 11 des</span></div><div>
       <h3>Pilot actiu</h3>
       <ul>
-        <li>Cada dilluns: lectura dels indicadors per API i informe breu a les responsables de línia.</li>
+        <li>Cada responsable revisa les vençudes de la seva línia (decisió 6): En curs amb nova data, Finalitzat, Nevera amb comentari, o nova data amb motiu.</li>
+        <li>Cada dilluns: lectura dels indicadors per API i informe breu a les responsables, amb les vençudes que encara queden per decidir.</li>
         <li>Sessió de dubtes de 30 minuts la segona setmana després de cada formació.</li>
         <li>Prova de peticions d'informació per correu a CIF.</li>
         <li>Revisió de soroll de correus a la setmana 2: si algú rep més de 4 correus setmanals sense acció, s'ajusta.</li>
@@ -266,7 +257,7 @@
 <section id="formacio">
   <div>
     <h2>Formació de 2 hores per a cada línia</h2>
-    <p>Mateix esquelet per a tothom, i un exercici central diferent per a cada línia que treballa sobre les seves fitxes reals. Cada assistent porta el seu ordinador amb Jira obert. Formen l'Elisa i el Kilian, amb la responsable de la línia present.</p>
+    <p>Mateix esquelet per a tothom, i un exercici central diferent per a cada línia que treballa sobre les seves fitxes reals. Cada assistent porta el seu ordinador amb Jira obert. Formen l'Elisa i el Kilian, amb la responsable de la línia present. La revisió de vençudes no és part de la sessió: la fa cada responsable al novembre.</p>
   </div>
   <div class="card">
     <h3 style="margin-top:0">Esquelet comú</h3>
@@ -278,7 +269,7 @@
       <tr><td>1:05</td><td>10</td><td>Pausa</td><td></td></tr>
       <tr><td>1:15</td><td>20</td><td><strong>Crear i comentar</strong></td><td>Crear una Acció amb <kbd>C</kbd> amb els 4 camps obligatoris. Comentar amb @menció a la responsable.</td></tr>
       <tr><td>1:35</td><td>15</td><td><strong>Notificacions</strong></td><td>Perfil de correu i subscripció setmanal pròpia, en viu.</td></tr>
-      <tr><td>1:50</td><td>10</td><td><strong>Compromís i tancament</strong></td><td>Comprovació per filtre que ningú té fitxes vençudes sense decisió. Data de la sessió de dubtes.</td></tr>
+      <tr><td>1:50</td><td>10</td><td><strong>Compromís i tancament</strong></td><td>Comprovació per filtre que cada assistent té fitxes assignades amb prioritat. Activació dels camps obligatoris de l'espai. Data de la sessió de dubtes.</td></tr>
     </table></div>
   </div>
 
@@ -287,43 +278,43 @@
       <div class="line-head"><h3>AIN · Atenció Intermèdia</h3><span class="who">Kilian Lansaque · onada 1 · dt 27 oct</span></div>
       <div class="nums"><div><b>158</b><span>Fitxes</span></div><div><b>48</b><span>En curs</span></div><div><b class="c">48</b><span>Vençudes</span></div><div><b>23</b><span>Vencen &lt;30d</span></div></div>
       <p class="focus"><strong>Focus:</strong> és la línia més activa i la de demostració. Totes les fitxes estan assignades al Kilian i cal repartir-les a l'equip.</p>
-      <p><strong>Exercici central:</strong> cada professional filtra per Sector i s'assigna amb <kbd>I</kbd> les accions que porta. Després revisa les 23 que vencen en 30 dies i les 48 vençudes: estat real, data realista o Nevera amb comentari.</p>
-      <p><strong>Surt amb:</strong> fitxes repartides, 0 vençudes sense decisió, prioritat informada.</p>
+      <p><strong>Exercici central:</strong> cada professional filtra per Sector i s'assigna amb <kbd>I</kbd> les accions que porta. Després revisa les 23 que vencen en els pròxims 30 dies: estat real i prioritat.</p>
+      <p><strong>Surt amb:</strong> fitxes repartides i prioritat informada. Les 48 vençudes queden per a la revisió del responsable al novembre.</p>
     </div>
     <div class="card line-card">
       <div class="line-head"><h3>SI · Sistemes d'Informació</h3><span class="who">Elisa Poses · onada 1 · dc 28 oct</span></div>
       <div class="nums"><div><b>78</b><span>Fitxes</span></div><div><b>15</b><span>Finalitzat</span></div><div><b class="c">29</b><span>Vençudes</span></div><div><b>21</b><span>Sense assignar</span></div></div>
       <p class="focus"><strong>Focus:</strong> és la línia amb més fitxes tancades i la que conviu amb fitxes antigues fetes a mà. Cal netejar abans d'ensenyar.</p>
-      <p><strong>Exercici central:</strong> repàs de les 21 sense assignar amb <kbd>I</kbd>, i revisió de les 29 vençudes. La responsable mostra com s'ha fusionat el duplicat SI-51 / SI-53 i com es posa a Nevera una fitxa de prova.</p>
-      <p><strong>Surt amb:</strong> 0 sense assignar, 0 vençudes sense decisió, espai net.</p>
+      <p><strong>Exercici central:</strong> repàs de les 21 sense assignar amb <kbd>I</kbd>, i prioritat a totes les obertes. La responsable mostra com s'ha fusionat el duplicat SI-51 / SI-53 i com es posa a Nevera una fitxa de prova.</p>
+      <p><strong>Surt amb:</strong> 0 sense assignar, prioritat informada, espai net.</p>
     </div>
     <div class="card line-card">
-      <div class="line-head"><h3>CIF · Contractació i Facturació</h3><span class="who">Responsable per definir · onada 1 · dj 29 oct</span></div>
+      <div class="line-head"><h3>CIF · Contractació i Facturació</h3><span class="who">Julia Valls · onada 1 · dj 29 oct</span></div>
       <div class="nums"><div><b>6</b><span>Fitxes</span></div><div><b>0</b><span>Vençudes</span></div><div><b>6</b><span>Sense assignar</span></div></div>
       <p class="focus"><strong>Focus:</strong> línia petita i sense vençudes. És la línia pilot del repositori únic de peticions d'informació del 2027.</p>
-      <p><strong>Exercici central:</strong> assignar les 6 fitxes i crear amb <kbd>C</kbd> 2 o 3 peticions d'informació reals de la setmana. Prova de la creació de fitxes per correu si ja està configurada.</p>
+      <p><strong>Exercici central:</strong> la Julia s'assigna les 6 fitxes amb <kbd>I</kbd> i crea amb <kbd>C</kbd> 2 o 3 peticions d'informació reals de la setmana. En Carles hi participa si ja té accés. Prova de la creació de fitxes per correu si ja està configurada.</p>
       <p><strong>Surt amb:</strong> totes les fitxes amb responsable i les primeres peticions reals dins Jira. Sessió de 90 minuts si el grup és petit.</p>
     </div>
     <div class="card line-card">
       <div class="line-head"><h3>AH · Atenció Hospitalària</h3><span class="who">Alba Luna · onada 2 · dt 3 nov</span></div>
       <div class="nums"><div><b>121</b><span>Fitxes</span></div><div><b>0</b><span>En curs</span></div><div><b class="c">30</b><span>Vençudes</span></div><div><b>2</b><span>Sense assignar</span></div></div>
       <p class="focus"><strong>Focus:</strong> tot està assignat però res està en curs. L'estat no reflecteix la realitat.</p>
-      <p><strong>Exercici central:</strong> "posar Jira al dia". Cadascú obre "Assignat a mi" i passa a En curs el que ja s'està fent. Després revisa les 30 vençudes. Es corregeix la data d'AH-43 i s'esborren AH-1 i AH-2 en directe.</p>
-      <p><strong>Surt amb:</strong> estat real a totes les fitxes i 0 vençudes sense decisió.</p>
+      <p><strong>Exercici central:</strong> "posar Jira al dia". Cadascú obre "Assignat a mi" i passa a En curs el que ja s'està fent. Es corregeix la data d'AH-43 i s'esborren AH-1 i AH-2 en directe.</p>
+      <p><strong>Surt amb:</strong> estat real a totes les fitxes. Les 30 vençudes queden per a la revisió de l'Alba al novembre.</p>
     </div>
     <div class="card line-card">
       <div class="line-head"><h3>ASM · Salut Mental</h3><span class="who">Maria Salut Martínez · onada 2 · dc 4 nov</span></div>
       <div class="nums"><div><b>102</b><span>Fitxes</span></div><div><b>6</b><span>En curs</span></div><div><b class="c">32</b><span>Vençudes</span></div><div><b class="c">102</b><span>Sense assignar</span></div></div>
       <p class="focus"><strong>Focus:</strong> cap fitxa té responsable. Sense assignació, ningú rep recordatoris.</p>
-      <p><strong>Exercici central:</strong> autoassignació per Sector amb <kbd>I</kbd> a la vista Llista, ordenant per venciment. Es revisen les 32 vençudes i s'omple la prioritat. Es recorda que la numeració d'objectius de Jira (L3OE25-27) és la correcta i l'Excel anava desplaçat.</p>
-      <p><strong>Surt amb:</strong> 102 fitxes amb responsable i prioritat, 0 vençudes sense decisió.</p>
+      <p><strong>Exercici central:</strong> autoassignació per Sector amb <kbd>I</kbd> a la vista Llista, ordenant per venciment. S'omple la prioritat. Es recorda que la numeració d'objectius de Jira (L3OE25-27) és la correcta i l'Excel anava desplaçat.</p>
+      <p><strong>Surt amb:</strong> 102 fitxes amb responsable i prioritat. Les 32 vençudes, a la revisió de la Maria Salut al novembre.</p>
     </div>
     <div class="card line-card">
       <div class="line-head"><h3>APR · Atenció Primària</h3><span class="who">Mireia Rodríguez · onada 2 · dj 5 nov</span></div>
       <div class="nums"><div><b>159</b><span>Fitxes</span></div><div><b>0</b><span>En curs</span></div><div><b class="c">32</b><span>Vençudes</span></div><div><b class="c">159</b><span>Sense assignar</span></div></div>
       <p class="focus"><strong>Focus:</strong> la línia més gran, sense cap fitxa assignada ni en curs. Necessita més temps d'exercici.</p>
       <p><strong>Exercici central:</strong> igual que ASM, en dos torns de 15 minuts per Sector (BNiBM i Maresme primer, Vallès després) perquè ningú esperi. Les fitxes que quedin sense amo les assigna la Mireia amb edició massiva en acabar.</p>
-      <p><strong>Surt amb:</strong> 159 fitxes amb responsable, estat real i prioritat. Si no s'acaba, sessió de 45 minuts la setmana següent.</p>
+      <p><strong>Surt amb:</strong> 159 fitxes amb responsable, estat real i prioritat. Les 32 vençudes, a la revisió de la Mireia al novembre. Si no s'acaba, sessió de 45 minuts la setmana següent.</p>
     </div>
   </div>
   <p class="note"><strong>Les dates són proposta.</strong> Depenen de la resposta a la pregunta 1 i de l'agenda de cada responsable. L'ordre dins de cada onada sí que importa: AIN primer perquè és la línia de demostració, APR l'última perquè és la més gran i aprofita tots els ajustos.</p>
@@ -382,7 +373,7 @@
   <div class="card">
     <div class="table-wrap"><table>
       <tr><th>Petició</th><th>On és</th><th>Estat</th></tr>
-      <tr><td>Revisar configuracions i espais (grilling)</td><td>Diagnòstic i Decisions pendents</td><td><span class="pill ok">fet</span> 8 decisions amb recomanació, a l'espera de resposta</td></tr>
+      <tr><td>Revisar configuracions i espais (grilling)</td><td>Diagnòstic i Decisions preses</td><td><span class="pill ok">fet</span> 10 decisions resoltes; 2 fets pendents de confirmar</td></tr>
       <tr><td>Guia d'implantació i prova pilot</td><td>Full de ruta i Indicadors</td><td><span class="pill ok">fet</span> 5 fases i criteri de go / no-go</td></tr>
       <tr><td>Guia amb imatges reals</td><td>Trucs amb imatges, i la Guia Jira RSBMN</td><td><span class="pill warn">parcial</span> 3 captures reals de Jira; la resta són de la guia</td></tr>
       <tr><td>Tips</td><td>Els 12 trucs, i pestanya "Trucs i IA" de la guia</td><td><span class="pill ok">fet</span></td></tr>
@@ -395,6 +386,8 @@
       <li><strong>Pla d'Atlassian desconegut.</strong> Si és el gratuït o l'estàndard, el límit d'execucions d'automatització pot quedar curt amb 6 espais. Cal confirmar-ho abans de crear les regles.</li>
       <li><strong>Desembre concentra el 55% dels venciments.</strong> 341 accions vencen al desembre. El pilot es mesurarà just abans d'aquest pic, i el risc real és el gener.</li>
       <li><strong>Dates de formació no validades.</strong> Són proposta sobre el calendari, sense conèixer l'agenda de les responsables.</li>
+      <li><strong>Configuració descentralitzada.</strong> Amb 6 persones configurant, els espais divergiran si no s'audita. L'auditoria per API abans de cada formació és obligatòria, no opcional.</li>
+      <li><strong>Vençudes fora de la formació.</strong> Si les responsables no les revisen al novembre, l'indicador de vençudes no arribarà a l'objectiu. El recordatori R2 del dilluns és el mecanisme de control.</li>
     </ul>
   </div>
 </section>
