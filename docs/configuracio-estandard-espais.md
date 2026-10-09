@@ -48,9 +48,20 @@ Font: `getJiraIssueTypeMetaWithFields` amb `requiredFieldsOnly=true` per a Proje
 
 Un cop aplicada la configuració a mà, es tornarà a passar la mateixa auditoria per confirmar que els 6 espais han quedat idèntics.
 
+## 2.1 Intent d'aplicació per API (9/10/2026)
+
+A petició de l'usuari es va tornar a buscar al catàleg del connector Atlassian (316 operacions) alguna via per marcar camps com a obligatoris, canviar l'assignat per defecte del projecte o assignar sense notificar. No n'hi ha cap: les úniques operacions d'escriptura disponibles són sobre issues (crear, editar, transicionar, comentar, enllaçar, worklogs, versions, sprints). La configuració de l'espai continua sent manual.
+
+## 2.2 Assignacions fetes per API: AIN
+
+Les 98 fitxes d'AIN sense assignar (AIN-60 a AIN-157, totes creades per la càrrega del 22/9/2026) s'han assignat a Kilian Lansaque per API el 9/10/2026. No s'ha enviat cap correu: l'autor del canvi, el reporter i l'assignat són la mateixa persona i cap fitxa tenia altres observadors (comprovat per JQL abans de començar). Verificació final: 0 fitxes sense assignar a AIN, 158 assignades a Kilian (98 noves + 60 que ja ho estaven).
+
+Les 290 fitxes sense assignar dels altres 5 espais (APR, ASM, AH, SI, CIF) no s'han tocat per API, perquè assignar-les a una altra persona dispararia la notificació "Issue assigned" a cada destinatari. Dues vies possibles: Bulk Change manual amb "Enviar correu" desmarcat, o desactivar temporalment aquesta notificació a *Configuració de l'espai → Notificacions* de cada espai i fer-ho per API.
+
 ## 3. Altres decisions de configuració (també manuals)
 
 - **Estat "Nevera" en vermell** a tots els espais, per distingir-lo de "Planificat" (ara comparteixen el gris de la categoria "nou"). Cap connector permet canviar la categoria d'un estat.
+- **Creació de fitxes al Tauler**: el botó "+" només existeix al peu de la columna i no es pot moure a dalt. Recomanació per a tots els espais: crear amb el botó "Crear" de la barra superior o la tecla C (obre el formulari complet amb els camps obligatoris), i agrupar el Tauler per Persona assignada per tenir columnes curtes.
 - **Filtres visibles per defecte** a les vistes Llista i Tauler de cada espai: Persona assignada, Sector Sanitari RSBMN, Nivell de prioritat. Vista predeterminada: "Assignat a mi", desada per a tothom.
 - **Assignacions per línia** (sense notificar, Bulk Change amb correu desmarcat): APR → Mireia Rodríguez; ASM → Maria Salut Martínez; AH (Projectes) → Alba Luna; SI → Elisa Poses; AIN → Kilian Lansaque.
 
