@@ -172,6 +172,7 @@
   .totals-bar div{height:100%}
 
   footer{padding-block:26px 40px; color:var(--muted); font-size:.82rem; border-top:1px solid var(--line); margin-top:10px}
+  kbd{display:inline-block;padding:1px 7px;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;background:var(--surface);font:600 .85em ui-monospace,monospace;}
 </style>
 
 <header class="hero">
@@ -200,6 +201,7 @@
         <li><div><strong>Troba el teu espai</strong><p>Al menú lateral esquerre, "Projectes" (o "Spaces" segons la vista) — hi apareixen tots els espais on tens accés: AH, APR, ASM, AIN, SI, CIF...</p></div></li>
         <li><div><strong>Mira què tens assignat</strong><p>A dalt a la dreta, la teva foto/avatar → "Les meves tasques" — o des de qualsevol espai, filtra per "Assignat a mi". Això et mostra només les fitxes que t'afecten, sense haver de buscar-les.</p></div></li>
         <li><div><strong>Obre una fitxa i actualitza-la</strong><p>Clica el títol d'una Acció. A dalt pots canviar l'estat (Planificat → En curs → Finalitzat); a baix pots afegir un comentari amb el progrés. Això és tot el que cal fer habitualment.</p></div></li>
+        <li><div><strong>Per crear una fitxa nova: tecla <kbd>C</kbd></strong><p>És el mètode estàndard a tots els espais. Des de qualsevol vista (Tauler, Llista, Cronograma...) prem la tecla <kbd>C</kbd> o el botó "Crear" de la barra superior. S'obre el formulari complet, tries el tipus (Projecte o Acció), omples Resum, Sector, Nivell de prioritat i Persona assignada, i si és una Acció tries el Projecte pare. No facis servir el "+" del peu de la columna del Tauler: només demana el títol i deixa la fitxa incompleta.</p></div></li>
         <li><div><strong>Si et quedes encallat</strong><p>Comenta-ho directament a la fitxa (queda registrat i és visible per a tothom de l'equip) o parla-ho amb l'Elisa o en Kilian a la propera sessió de formació.</p></div></li>
       </ol>
     </div>
@@ -241,11 +243,18 @@
   <div class="stack">
     <p>Cada tipus de fitxa té un paper diferent. <strong>Projecte</strong> i <strong>Acció</strong> són els únics lligats al Pla de Treball — per això porten els camps estratègics. <strong>Tasca</strong> i <strong>Subtasca</strong> són genèrics, per a feina que no cal classificar dins el pla.</p>
 
-    <div class="note">
-      <strong>⚠️ Jira no ho obliga.</strong> Quan crees un Projecte nou directament des de la vista <strong>Cronograma</strong> (o amb el botó ràpid "+"), Jira només et demana el nom — no et força a omplir Línia, Objectiu, Sector ni dates. Si no ho acabes d'omplir tu mateix just després, la fitxa queda incompleta i no apareixerà correctament al quadre de comandament. Fes-ne sempre un costum: crea la fitxa → obre-la → completa la checklist de sota.
+    <div class="card" style="border-left:4px solid var(--accent)">
+      <h3 style="margin-top:0">Mètode estàndard per crear qualsevol fitxa: tecla <kbd>C</kbd></h3>
+      <ol class="steps">
+        <li><div><strong>Entra a l'espai que toca</strong><p>AH, APR, ASM, AIN, SI o CIF. La vista en què estiguis és indiferent.</p></div></li>
+        <li><div><strong>Prem <kbd>C</kbd> (o el botó "Crear" de dalt)</strong><p>S'obre el formulari complet de creació. Comprova que l'espai seleccionat a dalt del formulari és el correcte.</p></div></li>
+        <li><div><strong>Tria el tipus</strong><p>Projecte si és un bloc de treball nou del pla; Acció si és feina dins d'un Projecte que ja existeix (hauràs de triar el Projecte pare).</p></div></li>
+        <li><div><strong>Omple els 4 camps obligatoris</strong><p>Resum, Sector Sanitari RSBMN, Nivell de prioritat i Persona assignada. Si pots, afegeix també Línia, Objectiu i dates (checklist de sota).</p></div></li>
+        <li><div><strong>Crea i localitza-la</strong><p>La fitxa nova queda al final de la columna Planificat. Per trobar-la, "Buscar tablero" amb el seu nom, o la vista Llista ordenada per "Creat" descendent.</p></div></li>
+      </ol>
     </div>
-    <div class="note" style="margin-top:12px">
-      <strong>💡 No cal baixar al final de la columna per crear.</strong> El botó "+" del Tauler només existeix al peu de cada columna i Jira no permet moure'l a dalt (és un límit dels espais team-managed, no una opció de configuració). Alternativa més ràpida des de qualsevol vista: botó <strong>Crear</strong> de la barra superior o la tecla <strong>C</strong>. Obre el formulari complet (amb els camps obligatoris) i la fitxa nova es troba després amb "Buscar tablero". Si la columna Planificat és massa llarga, activa <strong>Agrupar → Persona assignada</strong> al Tauler: cada grup té el seu propi "+" i les columnes queden curtes.
+    <div class="note">
+      <strong>⚠️ Per què no el "+" del Tauler ni la creació ràpida del Cronograma.</strong> Aquests dos accessos només demanen el títol i no forcen cap altre camp, de manera que la fitxa queda incompleta i no surt bé al quadre de comandament. A més, el "+" del Tauler només existeix al peu de cada columna i Jira no permet moure'l a dalt (és un límit dels espais team-managed). Si la columna Planificat és massa llarga, al Tauler activa <strong>Agrupar → Persona assignada</strong> per tenir columnes curtes.
     </div>
 
     <div class="grid-2">

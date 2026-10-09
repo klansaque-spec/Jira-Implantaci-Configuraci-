@@ -61,7 +61,7 @@ Les 290 fitxes sense assignar dels altres 5 espais (APR, ASM, AH, SI, CIF) no s'
 ## 3. Altres decisions de configuració (també manuals)
 
 - **Estat "Nevera" en vermell** a tots els espais, per distingir-lo de "Planificat" (ara comparteixen el gris de la categoria "nou"). Cap connector permet canviar la categoria d'un estat.
-- **Creació de fitxes al Tauler**: el botó "+" només existeix al peu de la columna i no es pot moure a dalt. Recomanació per a tots els espais: crear amb el botó "Crear" de la barra superior o la tecla C (obre el formulari complet amb els camps obligatoris), i agrupar el Tauler per Persona assignada per tenir columnes curtes.
+- **Mètode estàndard de creació: tecla C.** A tots els espais, qualsevol fitxa nova (Projecte o Acció) es crea amb la tecla C o el botó "Crear" de la barra superior, des de qualsevol vista. Obre el formulari complet i obliga a omplir Resum, Sector, Nivell de prioritat i Persona assignada. No s'utilitza el "+" del peu de la columna del Tauler ni la creació ràpida del Cronograma: només demanen el títol i deixen la fitxa incompleta. El "+" del Tauler no es pot moure a dalt (límit dels espais team-managed); si la columna és llarga, agrupar el Tauler per Persona assignada.
 - **Filtres visibles per defecte** a les vistes Llista i Tauler de cada espai: Persona assignada, Sector Sanitari RSBMN, Nivell de prioritat. Vista predeterminada: "Assignat a mi", desada per a tothom.
 - **Assignacions per línia** (sense notificar, Bulk Change amb correu desmarcat): APR → Mireia Rodríguez; ASM → Maria Salut Martínez; AH (Projectes) → Alba Luna; SI → Elisa Poses; AIN → Kilian Lansaque.
 
