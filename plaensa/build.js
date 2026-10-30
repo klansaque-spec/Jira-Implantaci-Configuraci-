@@ -3,7 +3,7 @@ const fs = require('fs'), path = require('path');
 const XLSX = require('xlsx');
 const P = require('./src/parser.js');
 const rd = f => fs.readFileSync(path.join(__dirname, f), 'utf8');
-const js = s => s.replace(/<\/script/gi, '<\\/script');
+const js = s => s.replace(/<\/script/gi, '<\\/script').replace(/\uFFFD/g, '\\uFFFD');
 
 const src = path.join(__dirname, 'dades', 'AEA_2026_2024_DOC_DE_TREBALL.xlsx');
 const parsed = P.parseWorkbook(XLSX, XLSX.read(fs.readFileSync(src), { type: 'buffer' }), path.basename(src));
