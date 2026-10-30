@@ -1,0 +1,7 @@
+{
+  "name": "plaensa-quadre",
+  "private": true,
+  "description": "Quadre de comandament PLAENSA RSBMN (fitxer HTML únic)",
+  "scripts": { "build": "node build.js" },
+  "dependencies": { "chart.js": "4.4.1", "pptxgenjs": "3.12.0", "xlsx": "0.18.5" }
+}
