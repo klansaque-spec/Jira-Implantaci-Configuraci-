@@ -333,31 +333,181 @@
       : '<div class="note warn">Els fitxers no inclouen la mida mostral ni els intervals de confiança. Les diferències de ±' + (S.config.thr.diff * 100) + ' pp (P101 ±' + String(S.config.thr.diff101).replace('.', ',') + ') són un llindar de rellevància, no de significació estadística: en centres amb poques enquestes poden ser soroll.</div>';
   }
 
+  /* ---------- Titulars per al comitè de direcció ---------- */
+  function txtD(q, d) { return d == null ? '' : fmtD(q, d); }
+  function shortQ(s, q) { var t = qtext(s, q); return t ? t.replace(/\?$/, '') : q; }
+  function stripOf(s, keys, q, y) {
+    return keys.map(function (k) { var v = val(s, y || UI.year, k, q); return { name: cname(k), tone: sem(q, v), label: fmt(q, v), v: norm(q, v) }; })
+      .filter(function (x) { return x.v != null; }).sort(function (a, b) { return a.v - b.v; });
+  }
+  function hlViz(z) {
+    if (!z) return '';
+    if (z.t === 'bullet') {
+      var pos = function (x) { return Math.max(0, Math.min(100, (x - 40) / 60 * 100)); };
+      return '<div class="hv-bullet" role="img" aria-label="' + esc(z.label) + '"><span class="band r" style="left:0;width:' + pos(75) + '%"></span><span class="band a" style="left:' + pos(75) + '%;width:' + (pos(90) - pos(75)) + '%"></span><span class="band g" style="left:' + pos(90) + '%;width:' + (100 - pos(90)) + '%"></span>' +
+        '<span class="bar t-' + z.tone + '" style="width:' + pos(z.v) + '%"></span>' + (z.cat != null ? '<span class="tick" style="left:' + pos(z.cat) + '%"></span>' : '') + '</div>' +
+        '<div class="hv-legend"><span>' + z.lo + '</span>' + (z.cat != null ? '<span><i class="tk"></i>Catalunya</span>' : '') + '<span>' + z.hi + '</span></div>';
+    }
+    if (z.t === 'dist') {
+      var tot = z.parts.reduce(function (a, p) { return a + p.n; }, 0) || 1;
+      return '<div class="hv-dist" role="img">' + z.parts.map(function (p) { return p.n ? '<span class="t-' + p.tone + '" style="width:' + (p.n / tot * 100) + '%" title="' + esc(p.label + ': ' + p.n) + '"></span>' : ''; }).join('') + '</div>' +
+        '<div class="hv-legend">' + z.parts.map(function (p) { return '<span><i class="sq t-' + p.tone + '"></i>' + esc(p.label) + ' ' + p.n + '</span>'; }).join('') + '</div>';
+    }
+    if (z.t === 'strip') {
+      return '<div class="hv-strip' + (z.items.length > 30 ? ' dense' : '') + '" role="img" aria-label="' + esc(z.label || '') + '">' + z.items.map(function (x) { return '<span class="t-' + x.tone + '" title="' + esc(x.name + ' · ' + x.label) + '"></span>'; }).join('') + '</div>' +
+        '<div class="hv-legend"><span>' + esc(z.left || 'pitjor') + '</span><span>' + esc(z.right || 'millor') + '</span></div>';
+    }
+    if (z.t === 'diverge') {
+      var mx = Math.max(z.up, z.down, 1);
+      return '<div class="hv-div" role="img" aria-label="' + z.down + ' empitjoren, ' + z.up + ' milloren"><div class="l"><span class="t-r" style="width:' + (z.down / mx * 100) + '%"></span></div><div class="r"><span class="t-g" style="width:' + (z.up / mx * 100) + '%"></span></div></div>' +
+        '<div class="hv-legend"><span>▼ empitjoren ' + z.down + '</span><span>milloren ' + z.up + ' ▲</span></div>';
+    }
+    if (z.t === 'rank') {
+      return '<ul class="hv-rank">' + z.items.map(function (x) { return '<li><span class="nm">' + esc(x.name) + '</span><span class="tr"><span class="t-' + x.tone + '" style="width:' + Math.max(2, Math.min(100, (x.v - (z.min || 0)) / (100 - (z.min || 0)) * 100)) + '%"></span></span><span class="vl">' + esc(x.label) + '</span></li>'; }).join('') + '</ul>';
+    }
+    return '';
+  }
+  function hl(items, scope) {
+    items = items.filter(Boolean);
+    if (!items.length) return '';
+    return '<section class="hl" aria-label="Titulars"><header class="hl-head"><span class="hl-eyebrow">Titulars per al comitè de direcció</span><span class="hl-scope">' + esc(scope) + '</span></header><div class="hl-grid">' +
+      items.map(function (h) {
+        return '<article class="hl-card t-' + h.tone + '"><div class="hl-kicker"><span class="dot ' + (h.tone === 'n' ? 'n' : h.tone) + '"></span>' + esc(h.kicker) + '</div><div class="hl-big">' + esc(h.big) + '</div><p class="hl-text">' + esc(h.text) + '</p>' + hlViz(h.viz) + (h.sub ? '<div class="hl-sub">' + esc(h.sub) + '</div>' : '') + '</article>';
+      }).join('') + '</div></section>';
+  }
+  function hlScope() { return scopeName() + ' · PLAENSA ' + UI.year + (UI.prev ? ' vs ' + UI.prev : ''); }
+  function aggS(s, y, q) { var keys = scopeKeys(s); return y ? agg(s, y, scopeName(), q, UI.sector ? keys : null).v : null; }
+
+  var HL = {
+    resum: function (s) {
+      var m = meta(s), keys = scopeKeys(s), out = [];
+      ['P101', 'P102'].forEach(function (q) {
+        var v = aggS(s, UI.year, q), cat = val(s, UI.year, 'CAT', q), p = aggS(s, UI.prev, q);
+        if (v == null) return;
+        var d = cat != null ? v - cat : null, lim = is101(q) ? 0.05 : 0.005;
+        out.push({
+          tone: sem(q, v), kicker: q === 'P101' ? 'Satisfacció global' : 'Fidelitat',
+          big: fmt(q, v),
+          text: (q === 'P101' ? 'Satisfacció global ' : 'Fidelitat ') + (d == null ? '' : Math.abs(d) < lim ? 'en línia amb Catalunya' : d > 0 ? 'per sobre de Catalunya (' + txtD(q, d) + ')' : 'per sota de Catalunya (' + txtD(q, d) + ')'),
+          sub: SEM_TXT[sem(q, v)] + (p != null ? ' · ' + txtD(q, v - p) + ' vs ' + UI.prev : ''),
+          viz: { t: 'bullet', v: as100(q, v), cat: as100(q, cat), tone: sem(q, v), lo: is101(q) ? '4' : '40%', hi: is101(q) ? '10' : '100%', label: fmt(q, v) }
+        });
+      });
+      var qv = m.qs.map(function (q) { var v = aggS(s, UI.year, q); return { q: q, v: v, n: norm(q, v) }; }).filter(function (x) { return x.v != null; });
+      if (qv.length) {
+        var w = qv.slice().sort(function (a, b) { return a.n - b.n; })[0];
+        var st = stripOf(s, keys, w.q), nr = st.filter(function (x) { return x.tone === 'r'; }).length;
+        out.push({ tone: sem(w.q, w.v), kicker: 'Punt més feble · ' + w.q, big: fmt(w.q, w.v), text: shortQ(s, w.q), sub: nr + ' de ' + st.length + ' centres en àrea de millora', viz: { t: 'strip', items: st, label: 'Centres per resultat' } });
+      }
+      if (UI.prev) {
+        var up = 0, down = 0;
+        keys.forEach(function (k) { m.qs.forEach(function (q) { var a = val(s, UI.year, k, q), b = val(s, UI.prev, k, q); var c = dcls(q, a != null && b != null ? a - b : null); if (c === 'up') up++; if (c === 'down') down++; }); });
+        out.push({ tone: up > down ? 'g' : down > up ? 'r' : 'a', kicker: 'Evolució ' + UI.prev + ' → ' + UI.year, big: up + ' ▲  ' + down + ' ▼', text: up >= down ? 'Predominen les millores rellevants' : 'Predominen els empitjoraments rellevants', sub: 'Resultats centre·pregunta amb canvis de més de ' + S.config.thr.diff * 100 + ' pp', viz: { t: 'diverge', up: up, down: down } });
+      } else if (qv.length) {
+        var b = qv.slice().sort(function (a, b2) { return b2.n - a.n; })[0];
+        out.push({ tone: sem(b.q, b.v), kicker: 'Fortalesa · ' + b.q, big: fmt(b.q, b.v), text: shortQ(s, b.q), sub: 'Millor pregunta de l\'àmbit', viz: { t: 'strip', items: stripOf(s, keys, b.q) } });
+      }
+      return out;
+    },
+    sf: function (s) {
+      var keys = scopeKeys(s), out = [];
+      ['P101', 'P102'].forEach(function (q) {
+        var st = stripOf(s, keys, q); if (!st.length) return;
+        var nr = st.filter(function (x) { return x.tone === 'r'; }).length, ng = st.filter(function (x) { return x.tone === 'g'; }).length;
+        out.push({ tone: nr > st.length / 2 ? 'r' : nr ? 'a' : 'g', kicker: q === 'P101' ? 'Satisfacció global (P101)' : 'Fidelitat (P102)', big: nr + ' de ' + st.length,
+          text: 'centres en àrea de millora' + (q === 'P101' ? ' (< ' + String(S.config.thr.red101).replace('.', ',') + ')' : ' (< ' + S.config.thr.red * 100 + '%)'), sub: ng + ' en excel·lència · ' + (st.length - nr - ng) + ' en àrea estàndard', viz: { t: 'strip', items: st, label: q } });
+      });
+      var st1 = stripOf(s, keys, 'P101');
+      if (st1.length > 1) {
+        var best = st1[st1.length - 1], worst = st1[0];
+        out.push({ tone: best.tone, kicker: 'Lidera la satisfacció', big: best.label, text: best.name, sub: 'Pitjor: ' + worst.name + ' (' + worst.label + ') · bretxa ' + fmtD('P101', (best.v - worst.v) * 10).replace('+', ''),
+          viz: { t: 'rank', min: 40, items: [best, worst].map(function (x) { return { name: x.name, v: x.v * 100, tone: x.tone, label: x.label }; }) } });
+      }
+      if (UI.prev) {
+        var ch = keys.map(function (k) { var a = val(s, UI.year, k, 'P101'), b = val(s, UI.prev, k, 'P101'); return a != null && b != null ? { k: k, d: a - b } : null; }).filter(Boolean);
+        if (ch.length) {
+          var mxc = ch.slice().sort(function (a, b) { return Math.abs(b.d) - Math.abs(a.d); })[0];
+          var up = ch.filter(function (x) { return dcls('P101', x.d) === 'up'; }).length, dn = ch.filter(function (x) { return dcls('P101', x.d) === 'down'; }).length;
+          out.push({ tone: mxc.d >= 0 ? 'g' : 'r', kicker: 'Canvi més gran en P101', big: txtD('P101', mxc.d), text: cname(mxc.k) + (mxc.d >= 0 ? ' millora' : ' empitjora') + ' respecte a ' + UI.prev, sub: 'Canvis rellevants (±' + String(S.config.thr.diff101).replace('.', ',') + '): ' + up + ' milloren, ' + dn + ' empitjoren', viz: { t: 'diverge', up: up, down: dn } });
+        }
+      }
+      return out;
+    },
+    semafor: function (s) {
+      var m = meta(s), keys = scopeKeys(s), out = [], dist = { r: 0, a: 0, g: 0 };
+      var byQ = {}, byK = {};
+      keys.forEach(function (k) { m.qs.forEach(function (q) { var v = val(s, UI.year, k, q); if (v == null) return; var t = sem(q, v); dist[t]++; if (t === 'r') { byQ[q] = (byQ[q] || 0) + 1; byK[k] = (byK[k] || 0) + 1; } }); });
+      var tot = dist.r + dist.a + dist.g;
+      if (!tot) return out;
+      out.push({ tone: dist.r / tot > 0.25 ? 'r' : dist.r ? 'a' : 'g', kicker: 'Mapa del semàfor', big: Math.round(dist.r / tot * 100) + '%', text: 'dels resultats centre·pregunta en àrea de millora', sub: Math.round(dist.g / tot * 100) + '% en excel·lència · ' + tot + ' resultats', viz: { t: 'dist', parts: [{ n: dist.r, tone: 'r', label: 'Vermell' }, { n: dist.a, tone: 'a', label: 'Taronja' }, { n: dist.g, tone: 'g', label: 'Verd' }] } });
+      var qw = Object.keys(byQ).sort(function (a, b) { return byQ[b] - byQ[a] || qSort(a, b); })[0];
+      if (qw) out.push({ tone: 'r', kicker: 'Pregunta crítica · ' + qw, big: byQ[qw] + ' de ' + keys.length, text: 'centres en vermell a «' + shortQ(s, qw) + '»', sub: 'Valor de l\'àmbit ' + fmt(qw, aggS(s, UI.year, qw)) + ' · Catalunya ' + fmt(qw, val(s, UI.year, 'CAT', qw)), viz: { t: 'strip', items: stripOf(s, keys, qw) } });
+      if (!UI.sector && m.sectors.length > 1) {
+        var secs = m.sectors.map(function (sc) {
+          var ks = m.active.filter(function (k) { return S.centres[k].sector === sc; }), r = 0, n = 0;
+          ks.forEach(function (k) { m.qs.forEach(function (q) { var v = val(s, UI.year, k, q); if (v == null) return; n++; if (sem(q, v) === 'r') r++; }); });
+          return { name: sc, v: n ? r / n * 100 : 0, tone: 'r', label: Math.round(n ? r / n * 100 : 0) + '%' };
+        }).sort(function (a, b) { return b.v - a.v; });
+        out.push({ tone: 'r', kicker: 'Sector amb més vermells', big: secs[0].label, text: secs[0].name + ' concentra la proporció més alta de resultats en vermell', sub: 'Menor proporció: ' + secs[secs.length - 1].name + ' (' + secs[secs.length - 1].label + ')', viz: { t: 'rank', min: 0, items: secs.map(function (x) { return { name: x.name, v: Math.min(100, x.v * 2), tone: 'r', label: x.label }; }) } });
+      }
+      var kw = Object.keys(byK).sort(function (a, b) { return byK[b] - byK[a]; })[0];
+      if (kw) {
+        var wq = m.qs.map(function (q) { return { q: q, v: val(s, UI.year, kw, q) }; }).filter(function (x) { return x.v != null; }).sort(function (a, b) { return norm(a.q, a.v) - norm(b.q, b.v); })[0];
+        out.push({ tone: 'r', kicker: 'Centre amb més vermells', big: byK[kw] + ' de ' + m.qs.length, text: cname(kw) + ': preguntes en àrea de millora', sub: 'Pitjor: ' + wq.q + ' ' + shortQ(s, wq.q) + ' (' + fmt(wq.q, wq.v) + ')',
+          viz: { t: 'strip', items: m.qs.map(function (q) { var v = val(s, UI.year, kw, q); return { name: q + ' ' + shortQ(s, q), tone: sem(q, v), label: fmt(q, v), v: norm(q, v) }; }).filter(function (x) { return x.v != null; }).sort(function (a, b) { return a.v - b.v; }), left: 'preguntes pitjors', right: 'millors' } });
+      }
+      return out;
+    },
+    comp: function (s) {
+      var cs = UI.comp.centres || [], qs = UI.comp.qs || [], out = [];
+      if (!cs.length || !qs.length) return [{ tone: 'n', kicker: 'Comparativa', big: '—', text: 'Tria almenys un centre i una pregunta per veure els titulars de la comparativa', sub: '' }];
+      var means = cs.map(function (k) { var v = mean(qs.map(function (q) { return as100(q, val(s, UI.year, k, q)); })); return { k: k, v: v }; }).filter(function (x) { return x.v != null; }).sort(function (a, b) { return b.v - a.v; });
+      var tn = function (v) { return v < S.config.thr.red * 100 ? 'r' : v < S.config.thr.green * 100 ? 'a' : 'g'; };
+      if (means.length) out.push({ tone: tn(means[0].v), kicker: 'Lidera la selecció', big: means[0].v.toFixed(1).replace('.', ',') + '%', text: cname(means[0].k) + ' té el millor resultat mitjà a les ' + qs.length + ' preguntes triades', sub: means.length > 1 ? 'Últim: ' + cname(means[means.length - 1].k) + ' (' + means[means.length - 1].v.toFixed(1).replace('.', ',') + '%)' : '',
+        viz: { t: 'rank', min: 40, items: means.slice(0, 6).map(function (x) { return { name: cname(x.k), v: x.v, tone: tn(x.v), label: x.v.toFixed(1).replace('.', ',') + '%' }; }) } });
+      if (cs.length > 1) {
+        var gaps = qs.map(function (q) {
+          var vs = cs.map(function (k) { return { k: k, v: val(s, UI.year, k, q) }; }).filter(function (x) { return x.v != null; }).sort(function (a, b) { return b.v - a.v; });
+          return vs.length > 1 ? { q: q, hi: vs[0], lo: vs[vs.length - 1], g: norm(q, vs[0].v) - norm(q, vs[vs.length - 1].v) } : null;
+        }).filter(Boolean).sort(function (a, b) { return b.g - a.g; });
+        if (gaps.length) { var g = gaps[0]; out.push({ tone: g.g > 0.15 ? 'r' : g.g > 0.05 ? 'a' : 'g', kicker: 'Bretxa més gran · ' + g.q, big: fmtD(g.q, g.hi.v - g.lo.v).replace('+', ''), text: shortQ(s, g.q), sub: cname(g.hi.k) + ' ' + fmt(g.q, g.hi.v) + ' vs ' + cname(g.lo.k) + ' ' + fmt(g.q, g.lo.v),
+          viz: { t: 'rank', min: 40, items: [g.hi, g.lo].map(function (x) { return { name: cname(x.k), v: as100(g.q, x.v), tone: sem(g.q, x.v), label: fmt(g.q, x.v) }; }) } }); }
+      }
+      var below = 0, above = 0;
+      cs.forEach(function (k) { qs.forEach(function (q) { var v = val(s, UI.year, k, q), c = val(s, UI.year, 'CAT', q); if (v == null || c == null) return; if (round3(v) < round3(c)) below++; else above++; }); });
+      if (below + above) out.push({ tone: below > above ? 'r' : below ? 'a' : 'g', kicker: 'Respecte a Catalunya', big: below + ' de ' + (below + above), text: 'resultats de la selecció per sota del valor de Catalunya', sub: above + ' iguals o per sobre', viz: { t: 'dist', parts: [{ n: below, tone: 'r', label: 'Per sota' }, { n: above, tone: 'g', label: 'Igual o per sobre' }] } });
+      return out;
+    },
+    cpr: function (s) {
+      var m = meta(s), keys = scopeKeys(s), out = [], cpr = cfg(s).cpr.filter(function (q) { return m.qs.indexOf(q) >= 0; });
+      if (cpr.length && UI.prev) {
+        var items = [], full = 0, koQ = {};
+        keys.forEach(function (k) {
+          var ok = 0, tot = 0;
+          cpr.forEach(function (q) { var r = cprStatus(s, k, q); if (r.st === 'nd') return; tot++; if (r.st === 'ok') ok++; else koQ[q] = (koQ[q] || 0) + 1; });
+          if (!tot) return;
+          var pct = ok / tot * 100; if (pct === 100) full++;
+          items.push({ name: cname(k), tone: pct === 100 ? 'g' : pct >= 50 ? 'a' : 'r', label: Math.round(pct) + '%', v: pct });
+        });
+        items.sort(function (a, b) { return a.v - b.v; });
+        out.push({ tone: full === items.length ? 'g' : full >= items.length / 2 ? 'a' : 'r', kicker: 'Objectiu CPR ' + UI.year, big: full + ' de ' + items.length, text: 'centres assoleixen totes les preguntes CPR', sub: 'Assoliment mitjà ' + Math.round(mean(items.map(function (x) { return x.v; })) || 0) + '%', viz: { t: 'strip', items: items, left: 'menys assoliment', right: 'més assoliment' } });
+        var qk = Object.keys(koQ).sort(function (a, b) { return koQ[b] - koQ[a]; })[0];
+        if (qk) out.push({ tone: 'r', kicker: 'CPR més incomplerta · ' + qk, big: koQ[qk] + ' centres', text: 'empitjoren a «' + shortQ(s, qk) + '»', sub: 'Valor de l\'àmbit ' + fmt(qk, aggS(s, UI.year, qk)) + ' (' + txtD(qk, aggS(s, UI.year, qk) - aggS(s, UI.prev, qk)) + ')', viz: { t: 'strip', items: stripOf(s, keys, qk) } });
+      } else {
+        out.push({ tone: 'n', kicker: 'Objectiu CPR', big: '—', text: cpr.length ? 'Cal un any de comparació per avaluar la CPR' : 'Aquest estudi no té preguntes CPR definides', sub: cpr.length ? '' : 'Es poden marcar a Configuració › Preguntes' });
+      }
+      var acts = S.actions.filter(function (a) { return a.study === s && keys.indexOf(a.centre) >= 0; });
+      var cnt = { Pendent: 0, 'En curs': 0, Feta: 0 }; acts.forEach(function (a) { cnt[a.estat] = (cnt[a.estat] || 0) + 1; });
+      var redNoAct = keys.filter(function (k) { return m.qs.some(function (q) { return sem(q, val(s, UI.year, k, q)) === 'r'; }) && !acts.some(function (a) { return a.centre === k; }); }).length;
+      out.push({ tone: redNoAct ? 'r' : acts.length ? 'g' : 'a', kicker: 'Accions de millora', big: String(acts.length), text: acts.length ? 'accions registrades · ' + cnt.Feta + ' fetes' : 'Encara no hi ha accions registrades', sub: redNoAct + ' centres amb indicadors en vermell sense cap acció', viz: acts.length ? { t: 'dist', parts: [{ n: cnt.Pendent, tone: 'r', label: 'Pendents' }, { n: cnt['En curs'], tone: 'a', label: 'En curs' }, { n: cnt.Feta, tone: 'g', label: 'Fetes' }] } : null });
+      return out;
+    }
+  };
+
   /* ---------- 1. Resum KPI i Top 5 ---------- */
   function renderResum(el, s) {
     var m = meta(s), keys = scopeKeys(s), sc = scopeName();
-    var k101 = agg(s, UI.year, sc, 'P101', UI.sector ? keys : null), p101 = UI.prev ? agg(s, UI.prev, sc, 'P101', UI.sector ? keys : null) : { v: null };
-    var k102 = agg(s, UI.year, sc, 'P102', UI.sector ? keys : null), p102 = UI.prev ? agg(s, UI.prev, sc, 'P102', UI.sector ? keys : null) : { v: null };
-    var cat101 = val(s, UI.year, 'CAT', 'P101'), cat102 = val(s, UI.year, 'CAT', 'P102');
-    var dist = { r: 0, a: 0, g: 0 };
-    keys.forEach(function (k) { m.qs.forEach(function (q) { var v = val(s, UI.year, k, q); if (v != null) dist[sem(q, v)]++; }); });
-    var tot = dist.r + dist.a + dist.g || 1;
-    var aggNote = function (a) { return a.official ? 'valor oficial' : (a.weighted ? 'mitjana ponderada per n' : (a.k ? 'mitjana de ' + a.k + ' centres' : '')); };
-    function kpi(label, q, a, p, cat) {
-      var c = sem(q, a.v);
-      return '<div class="card kpi ' + c + '"><span class="kpi-label">' + label + ' · ' + esc(sc) + '</span><span class="kpi-value">' + fmt(q, a.v) + '</span>' +
-        '<span class="kpi-meta"><span class="pill ' + c + '"><span class="dot ' + c + '"></span>' + SEM_TXT[c] + '</span>' + (UI.prev ? '<span>' + dspan(q, a.v != null && p.v != null ? a.v - p.v : null) + ' vs ' + UI.prev + '</span>' : '') + '</span>' +
-        '<span class="kpi-meta"><span>Catalunya ' + fmt(q, cat) + '</span><span>' + aggNote(a) + '</span></span></div>';
-    }
-    var html = '<div class="grid g4">' +
-      kpi('Satisfacció global (P101, 0–10)', 'P101', k101, p101, cat101) +
-      kpi('Fidelitat (P102)', 'P102', k102, p102, cat102) +
-      '<div class="card kpi"><span class="kpi-label">Distribució del semàfor · ' + esc(sc) + '</span><span class="kpi-value">' + Math.round(dist.r / tot * 100) + '%</span><span class="kpi-meta">resultats centre·pregunta en àrea de millora</span>' +
-      '<div class="distbar" aria-label="Distribució"><span style="width:' + (dist.g / tot * 100) + '%;background:var(--sem-g)"></span><span style="width:' + (dist.a / tot * 100) + '%;background:var(--sem-a)"></span><span style="width:' + (dist.r / tot * 100) + '%;background:var(--sem-r)"></span></div>' +
-      '<span class="kpi-meta"><span>Verd ' + dist.g + '</span><span>Taronja ' + dist.a + '</span><span>Vermell ' + dist.r + '</span></span></div>' +
-      '<div class="card kpi"><span class="kpi-label">Abast</span><span class="kpi-value">' + keys.length + '</span><span class="kpi-meta">centres analitzats · ' + m.qs.length + ' preguntes</span>' +
-      '<span class="kpi-meta">' + (m.centres.length - m.active.length ? (m.centres.length - m.active.length) + ' centres fora de sector o exclosos' : 'Tots els centres tenen sector') + '</span></div>' +
-      '</div>';
+    var html = hl(HL.resum(s), hlScope());
 
     // Top 5 preguntes (agregat de l'àmbit)
     var qv = m.qs.map(function (q) { var a = agg(s, UI.year, sc, q, UI.sector ? keys : null); return { q: q, v: a.v, n: norm(q, a.v) }; }).filter(function (x) { return x.v != null; });
@@ -378,7 +528,7 @@
         return '<li><span class="pos">' + (i + 1) + '</span><span class="lbl">' + esc(cname(x.k)) + '<small>' + esc(qlabel(s, x.q)) + '</small></span><span class="pill ' + sem(x.q, x.v) + '"><span class="dot ' + sem(x.q, x.v) + '"></span>' + fmt(x.q, x.v) + '</span></li>';
       }).join('') + '</ol>';
     }
-    html += '<div class="grid g2" style="margin-top:16px">' +
+    html += '<div class="grid g2x" style="margin-top:16px">' +
       '<div class="block"><h3>Top 5 millors preguntes · ' + esc(sc) + '</h3>' + rankQ(best) + '</div>' +
       '<div class="block"><h3>Top 5 pitjors preguntes · ' + esc(sc) + '</h3>' + rankQ(worst) + '</div>' +
       '<div class="block"><h3>Top 5 millors resultats centre·pregunta</h3>' + rankC(cb) + '</div>' +
@@ -445,7 +595,7 @@
       return '<td class="v"><span class="pill ' + c + '"><span class="dot ' + c + '"></span>' + fmt(q, a) + '</span></td>' +
         (UI.prev ? '<td class="v">' + fmt(q, b) + '</td><td class="v">' + dspan(q, a != null && b != null ? a - b : null) + (sg === 'sig' ? '*' : '') + '</td>' : '');
     }
-    var html = '<div class="grid g2"><div class="card block"><h3>Satisfacció global P101 per centre</h3><div class="chart-box"><canvas id="c-101"></canvas></div></div>' +
+    var html = hl(HL.sf(s), hlScope()) + '<div class="grid g2"><div class="card block"><h3>Satisfacció global P101 per centre</h3><div class="chart-box"><canvas id="c-101"></canvas></div></div>' +
       '<div class="card block"><h3>Fidelitat P102 per centre</h3><div class="chart-box"><canvas id="c-102"></canvas></div></div></div>';
     html += '<div class="block" style="margin-top:16px"><h3>Taula de satisfacció i fidelitat</h3><div class="tscroll"><table class="t"><thead><tr><th>Àmbit / centre</th>' +
       '<th class="v">P101 ' + UI.year + '</th>' + (UI.prev ? '<th class="v">P101 ' + UI.prev + '</th><th class="v">Dif.</th>' : '') +
@@ -505,7 +655,7 @@
     });
     function getv(c, yy, q) { return c.t === 'c' ? val(s, yy, c.key, q) : agg(s, yy, c.key, q).v; }
 
-    var html = '<div class="toolbar"><span class="seg" role="group" aria-label="Filtre de preguntes">' +
+    var html = hl(HL.semafor(s), hlScope()) + '<div class="toolbar"><span class="seg" role="group" aria-label="Filtre de preguntes">' +
       [['all', 'Totes'], ['trans', 'Transversals'], ['spec', 'Específiques'], ['cpr', 'CPR']].map(function (x) { return '<button type="button" data-mf="' + x[0] + '" class="' + (UI.mxFilter === x[0] ? 'on' : '') + '">' + x[1] + '</button>'; }).join('') + '</span>' +
       '<label class="chk"><input type="checkbox" id="mx-diff"' + (UI.mxDiff ? ' checked' : '') + '> Mostrar diferència' + (UI.prev ? ' vs ' + UI.prev : '') + '</label>' +
       '<span class="kpi-meta">Marcs:</span>' +
@@ -565,7 +715,7 @@
     var oth = m.centres.filter(function (k) { return m.active.indexOf(k) < 0; });
     if (oth.length) groups.push({ name: 'Fora de sector o exclosos', ks: oth });
 
-    var html = '<div class="grid g2"><div class="block"><h3>Centres a comparar</h3><div class="field" style="margin-bottom:6px"><input id="cmp-find" type="search" placeholder="Cerca un centre…" aria-label="Cerca un centre"></div><div class="picklist" id="cmp-centres">' +
+    var html = hl(HL.comp(s), (UI.comp.centres.length) + ' centres · ' + UI.comp.qs.length + ' preguntes · ' + UI.year) + '<div class="grid g2"><div class="block"><h3>Centres a comparar</h3><div class="field" style="margin-bottom:6px"><input id="cmp-find" type="search" placeholder="Cerca un centre…" aria-label="Cerca un centre"></div><div class="picklist" id="cmp-centres">' +
       groups.map(function (g) {
         return '<div class="grp"><span>' + esc(g.name) + '</span><button type="button" class="btn sm ghost" data-allsec="' + esc(g.name) + '">Tot el sector</button></div>' +
           g.ks.map(function (k) { return '<label data-name="' + esc(cfull(k).toLowerCase() + ' ' + cname(k).toLowerCase()) + '"><input type="checkbox" value="' + k + '"' + (UI.comp.centres.indexOf(k) >= 0 ? ' checked' : '') + '> ' + esc(cname(k)) + '</label>'; }).join('');
@@ -680,7 +830,7 @@
   }
   function renderCpr(el, s) {
     var m = meta(s), cpr = cfg(s).cpr.filter(function (q) { return m.qs.indexOf(q) >= 0; });
-    var html = '<div class="block"><h3>Indicadors CPR ' + UI.year + (UI.prev ? ' vs ' + UI.prev : '') + '</h3>';
+    var html = hl(HL.cpr(s), hlScope()) + '<div class="block"><h3>Indicadors CPR ' + UI.year + (UI.prev ? ' vs ' + UI.prev : '') + '</h3>';
     if (!cpr.length) {
       html += '<div class="note warn">Aquest estudi no té preguntes CPR definides. Les pots marcar a Configuració › Preguntes.</div>';
     } else if (!UI.prev) {
@@ -1034,7 +1184,7 @@
   function buildPptx(s) {
     if (typeof PptxGenJS === 'undefined') { toast('No s\'ha carregat el generador de presentacions.'); return; }
     try {
-      var ctx = { S: S, UI: UI, s: s, meta: meta(s), val: val, agg: agg, fmt: fmt, fmtD: fmtD, sem: sem, dcls: dcls, norm: norm, extremes: extremes, cname: cname, cfull: cfull, qlabel: qlabel, qtext: qtext, isCpr: isCpr, isTrans: isTrans, cfg: cfg, cprStatus: cprStatus, studyName: studyName, mean: mean, round3: round3 };
+      var ctx = { S: S, UI: UI, s: s, meta: meta(s), val: val, agg: agg, fmt: fmt, fmtD: fmtD, sem: sem, dcls: dcls, norm: norm, extremes: extremes, cname: cname, cfull: cfull, qlabel: qlabel, qtext: qtext, isCpr: isCpr, isTrans: isTrans, cfg: cfg, cprStatus: cprStatus, studyName: studyName, mean: mean, round3: round3, headlines: HL.resum(s), hlScope: hlScope() };
       PLPPT.build(ctx).then(function (name) { toast('Presentació generada: ' + name); }).catch(function (e) { toast('Error en generar la presentació: ' + e.message); });
     } catch (e) { toast('Error en generar la presentació: ' + e.message); }
   }

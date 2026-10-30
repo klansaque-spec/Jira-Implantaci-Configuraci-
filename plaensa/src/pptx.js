@@ -65,6 +65,23 @@
     cover.addText([{ text: 'Atenció a la Ciutadania - RSBMN', options: { breakLine: true } }, { text: 'Servei Català de la Salut' }], { x: 0.8, y: 4.4, w: 8, h: 0.9, fontSize: 16, color: GREY, fontFace: FONT });
     cover.addText(today(), { x: 0.8, y: 5.6, w: 6, h: 0.4, fontSize: 12, color: GREY, fontFace: FONT });
 
+    // Missatges clau (titulars per al comitè)
+    var hls = (c.headlines || []).slice(0, 4);
+    if (hls.length) {
+      var mk = slide('Missatges clau', c.hlScope || '');
+      var TONE = { r: 'C62828', a: 'D98200', g: '2E7D32', n: '999999' };
+      var cw = (12.3 - 0.3 * (hls.length - 1)) / hls.length;
+      hls.forEach(function (h, i) {
+        var x = 0.5 + i * (cw + 0.3);
+        mk.addShape(pptx.shapes.RECTANGLE, { x: x, y: 1.4, w: cw, h: 5.2, fill: { color: '231F1E' }, line: { color: '231F1E' } });
+        mk.addShape(pptx.shapes.RECTANGLE, { x: x, y: 1.4, w: cw, h: 0.12, fill: { color: TONE[h.tone] || '999999' }, line: { color: TONE[h.tone] || '999999' } });
+        mk.addText(h.kicker.toUpperCase(), { x: x + 0.2, y: 1.7, w: cw - 0.4, h: 0.4, fontSize: 10, color: 'BDB4AF', bold: true, fontFace: FONT });
+        mk.addText(h.big, { x: x + 0.2, y: 2.15, w: cw - 0.4, h: 1.0, fit: 'shrink', fontSize: h.big.length > 7 ? 26 : 36, bold: true, color: 'FFFFFF', fontFace: FONT });
+        mk.addText(h.text, { x: x + 0.2, y: 3.25, w: cw - 0.4, h: 1.7, fontSize: 15, bold: true, color: 'F7F3F0', fontFace: FONT, valign: 'top' });
+        if (h.sub) mk.addText(h.sub, { x: x + 0.2, y: 5.2, w: cw - 0.4, h: 1.2, fontSize: 11, color: 'BDB4AF', fontFace: FONT, valign: 'bottom' });
+      });
+    }
+
     // 2-3. Introducció i fitxa tècnica
     section(1, 'Introducció');
     var ft = slide('Fitxa tècnica', c.studyName(s));
