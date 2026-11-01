@@ -266,6 +266,11 @@
     Chart.defaults.color = css('--muted');
     Chart.defaults.borderColor = css('--line');
     Chart.defaults.font.family = 'Arial, Helvetica, sans-serif';
+    Chart.defaults.font.size = 12;
+    Chart.defaults.plugins.legend.labels.usePointStyle = true;
+    Chart.defaults.plugins.legend.labels.boxHeight = 8;
+    Chart.defaults.plugins.tooltip.padding = 10;
+    Chart.defaults.plugins.tooltip.cornerRadius = 4;
     config.options = config.options || {};
     config.options.responsive = true;
     config.options.maintainAspectRatio = false;
@@ -285,6 +290,7 @@
     destroyCharts();
     renderStudyTabs();
     var p = $('#panel');
+    if (UI.study === 'ALL') { renderOverview(); return; }
     var s = UI.study, m = meta(s);
     if (!m.years.length) { p.innerHTML = emptyStudy(s); bindEmpty(); return; }
     if (m.years.indexOf(UI.year) < 0) UI.year = m.years[0];
@@ -313,12 +319,12 @@
   }
 
   function renderStudyTabs() {
-    $('#studies').innerHTML = STUDIES.map(function (st) {
+    $('#studies').innerHTML = '<button type="button" class="study-tab overview' + (UI.study === 'ALL' ? ' active' : '') + '" data-st="ALL"><span class="code">RSBMN · tots els estudis</span><span class="nm">Visió global</span></button>' + STUDIES.map(function (st) {
       var m = meta(st.id), has = m.years.length > 0;
       return '<button type="button" class="study-tab' + (UI.study === st.id ? ' active' : '') + (has ? '' : ' empty') + '" data-st="' + st.id + '">' +
         '<span class="code">' + st.id + (has ? ' · ' + m.years.join('/') : ' · sense dades') + '</span><span class="nm">' + esc(st.name) + '</span></button>';
     }).join('');
-    $all('.study-tab').forEach(function (b) { b.onclick = function () { UI.study = b.dataset.st; UI.year = null; UI.prev = null; UI.sector = ''; UI.comp.centres = null; UI.comp.qs = null; UI.accCentre = ''; lsSet('plaensa-study', UI.study); render(); }; });
+    $all('.study-tab').forEach(function (b) { b.onclick = function () { openStudy(b.dataset.st); }; });
   }
 
   function emptyStudy(s) {
@@ -503,6 +509,75 @@
       return out;
     }
   };
+
+  /* ---------- Visió global (tots els estudis) ---------- */
+  function overviewRows() {
+    return STUDIES.map(function (st) {
+      var m = meta(st.id);
+      if (!m.years.length) return { st: st, empty: true };
+      var y = m.years[0], pv = m.years[1] || null;
+      var g = function (yy, q) { return yy ? agg(st.id, yy, 'RSBMN', q).v : null; };
+      var dist = { r: 0, a: 0, g: 0 };
+      m.active.forEach(function (k) { m.qs.forEach(function (q) { var v = val(st.id, y, k, q); if (v != null) dist[sem(q, v)]++; }); });
+      var qv = m.qs.map(function (q) { var v = g(y, q); return { q: q, v: v, n: norm(q, v) }; }).filter(function (x) { return x.v != null; }).sort(function (a, b) { return a.n - b.n; });
+      var tot = dist.r + dist.a + dist.g;
+      return { st: st, y: y, pv: pv, n: m.active.length, dist: dist, red: tot ? dist.r / tot : 0, worst: qv[0], best: qv[qv.length - 1],
+        p101: g(y, 'P101'), p101p: g(pv, 'P101'), cat101: val(st.id, y, 'CAT', 'P101'), p102: g(y, 'P102'), p102p: g(pv, 'P102'), cat102: val(st.id, y, 'CAT', 'P102') };
+    });
+  }
+  function renderOverview() {
+    var p = $('#panel'), rows = overviewRows(), full = rows.filter(function (r) { return !r.empty; });
+    var with101 = full.filter(function (r) { return r.p101 != null; }).sort(function (a, b) { return b.p101 - a.p101; });
+    var hls = [];
+    hls.push({ tone: full.length === STUDIES.length ? 'g' : 'a', kicker: 'Cobertura', big: full.length + ' de ' + STUDIES.length, text: 'estudis PLAENSA carregats al quadre', sub: full.map(function (r) { return r.st.id + ' ' + r.y; }).join(' · '),
+      viz: { t: 'strip', items: rows.map(function (r) { return { name: r.st.name, tone: r.empty ? 'n' : sem('P101', r.p101), label: r.empty ? 'sense dades' : fmt('P101', r.p101) }; }), left: STUDIES[0].id, right: STUDIES[STUDIES.length - 1].id } });
+    if (with101.length) {
+      hls.push({ tone: sem('P101', with101[0].p101), kicker: 'Millor satisfacció global', big: fmt('P101', with101[0].p101), text: with101[0].st.name, sub: with101.length > 1 ? 'Més baixa: ' + with101[with101.length - 1].st.name + ' (' + fmt('P101', with101[with101.length - 1].p101) + ')' : '',
+        viz: { t: 'rank', min: 60, items: with101.map(function (r) { return { name: r.st.id, v: r.p101 * 10, tone: sem('P101', r.p101), label: fmt('P101', r.p101) }; }) } });
+      var below = with101.filter(function (r) { return r.cat101 != null && round3(r.p101) < round3(r.cat101); });
+      hls.push({ tone: below.length > with101.length / 2 ? 'r' : below.length ? 'a' : 'g', kicker: 'RSBMN davant de Catalunya', big: below.length + ' de ' + with101.length, text: 'estudis amb la satisfacció global de la regió per sota de Catalunya', sub: below.length ? 'Per sota: ' + below.map(function (r) { return r.st.id + ' (' + fmtD('P101', r.p101 - r.cat101) + ')'; }).join(' · ') : 'Tots iguals o per sobre',
+        viz: { t: 'dist', parts: [{ n: below.length, tone: 'r', label: 'Per sota' }, { n: with101.length - below.length, tone: 'g', label: 'Igual o per sobre' }] } });
+    }
+    if (full.length) {
+      var wr = full.slice().sort(function (a, b) { return b.red - a.red; })[0];
+      hls.push({ tone: wr.red > 0.25 ? 'r' : 'a', kicker: 'Més àrea de millora', big: Math.round(wr.red * 100) + '%', text: wr.st.name + ': resultats centre·pregunta en vermell', sub: wr.worst ? 'Pitjor pregunta: ' + wr.worst.q + ' ' + shortQ(wr.st.id, wr.worst.q) + ' (' + fmt(wr.worst.q, wr.worst.v) + ')' : '',
+        viz: { t: 'dist', parts: [{ n: wr.dist.r, tone: 'r', label: 'Vermell' }, { n: wr.dist.a, tone: 'a', label: 'Taronja' }, { n: wr.dist.g, tone: 'g', label: 'Verd' }] } });
+    }
+    var html = '<div class="study-head"><div><h2>Visió global PLAENSA</h2><div class="sub">Regió Sanitària Metropolitana Nord · últim any disponible de cada estudi · valors RSBMN (oficials quan el fitxer els inclou, si no mitjana de centres)</div></div>' +
+      '<div class="filters"><button class="btn primary" type="button" id="ov-load">Carregar Excel</button></div></div>' +
+      '<div style="margin-top:16px">' + hl(hls, 'Tots els estudis · ' + full.length + ' carregats') + '</div>' +
+      '<h3 class="sec-h">Estudis</h3><div class="ov-grid">' + rows.map(function (r) {
+        if (r.empty) return '<button type="button" class="ov-tile empty" data-open="' + r.st.id + '"><span class="ov-code">' + r.st.id + '</span><span class="ov-name">' + esc(r.st.name) + '</span><span class="ov-empty">Sense dades · fes clic per obrir-lo i carregar l\'Excel</span></button>';
+        var c = sem('P101', r.p101);
+        return '<button type="button" class="ov-tile t-' + c + '" data-open="' + r.st.id + '">' +
+          '<span class="ov-top"><span class="ov-code">' + r.st.id + ' · ' + r.y + (r.pv ? ' vs ' + r.pv : '') + '</span><span class="pill ' + c + '"><span class="dot ' + c + '"></span>' + SEM_TXT[c] + '</span></span>' +
+          '<span class="ov-name">' + esc(r.st.name) + '</span>' +
+          '<span class="ov-kpis"><span><span class="ov-lbl">Satisfacció P101</span><span class="ov-big">' + fmt('P101', r.p101) + '</span><span class="ov-d">' + (r.p101p != null ? dspan('P101', r.p101 - r.p101p) + ' vs ' + r.pv : '&nbsp;') + '</span></span>' +
+          '<span><span class="ov-lbl">Fidelitat P102</span><span class="ov-big sm">' + fmt('P102', r.p102) + '</span><span class="ov-d">' + (r.p102p != null ? dspan('P102', r.p102 - r.p102p) + ' vs ' + r.pv : '&nbsp;') + '</span></span></span>' +
+          hlViz({ t: 'bullet', v: as100('P101', r.p101), cat: as100('P101', r.cat101), tone: c, lo: '4', hi: '10', label: fmt('P101', r.p101) }) +
+          '<span class="ov-lbl" style="margin-top:6px">Semàfor de ' + r.n + ' centres</span>' +
+          hlViz({ t: 'dist', parts: [{ n: r.dist.r, tone: 'r', label: 'Vermell' }, { n: r.dist.a, tone: 'a', label: 'Taronja' }, { n: r.dist.g, tone: 'g', label: 'Verd' }] }) +
+          (r.worst ? '<span class="ov-worst"><span class="dot ' + sem(r.worst.q, r.worst.v) + '"></span>Punt més feble: <strong>' + r.worst.q + '</strong> ' + esc(shortQ(r.st.id, r.worst.q)) + ' · ' + fmt(r.worst.q, r.worst.v) + '</span>' : '') +
+          '<span class="ov-open">Obrir l\'estudi →</span></button>';
+      }).join('') + '</div>' +
+      (with101.length ? '<div class="grid g2" style="margin-top:18px"><div class="card block"><h3>Satisfacció global P101 · RSBMN vs Catalunya</h3><div class="chart-box"><canvas id="ov-101"></canvas></div></div><div class="card block"><h3>Fidelitat P102 · RSBMN vs Catalunya</h3><div class="chart-box"><canvas id="ov-102"></canvas></div></div></div>' : '') +
+      '<div class="note" style="margin-top:12px">Cada estudi té el seu propi qüestionari i calendari: compareu nivells i tendències, no diferències petites entre estudis. P101 es mostra en escala 0–100 (× 10) als gràfics.</div>';
+    p.innerHTML = html;
+    $('#ov-load').onclick = openLoad;
+    $all('[data-open]').forEach(function (b) { b.onclick = function () { openStudy(b.dataset.open); }; });
+    ['P101', 'P102'].forEach(function (q) {
+      var rs = full.filter(function (r) { return r[q === 'P101' ? 'p101' : 'p102'] != null; });
+      var k = q === 'P101' ? 'p101' : 'p102', kc = q === 'P101' ? 'cat101' : 'cat102';
+      chart(q === 'P101' ? 'ov-101' : 'ov-102', {
+        type: 'bar',
+        data: { labels: rs.map(function (r) { return r.st.id; }), datasets: [
+          { label: 'RSBMN', data: rs.map(function (r) { return as100(q, r[k]); }), backgroundColor: rs.map(function (r) { return semColor(sem(q, r[k])); }), borderRadius: 4 },
+          { label: 'Catalunya', data: rs.map(function (r) { return as100(q, r[kc]); }), backgroundColor: css('--line'), borderRadius: 4 }] },
+        options: { scales: { y: pctAxis(50), x: { grid: { display: false } } }, plugins: { tooltip: { callbacks: { title: function (it) { return rs[it[0].dataIndex].st.name; }, label: function (c2) { return c2.dataset.label + ': ' + (q === 'P101' ? (c2.parsed.y / 10).toFixed(2).replace('.', ',') : c2.parsed.y + '%'); } } } } }
+      });
+    });
+  }
+  function openStudy(id) { UI.study = id; UI.year = null; UI.prev = null; UI.sector = ''; UI.comp.centres = null; UI.comp.qs = null; UI.accCentre = ''; lsSet('plaensa-study', UI.study); render(); window.scrollTo(0, 0); }
 
   /* ---------- 1. Resum KPI i Top 5 ---------- */
   function renderResum(el, s) {
@@ -1207,7 +1282,7 @@
     }).catch(function () { loadDefault(); }).then(function () {
       invalidate();
       var saved = lsGet('plaensa-study');
-      UI.study = saved && STUDIES.some(function (x) { return x.id === saved; }) ? saved : (STUDIES.filter(function (x) { return meta(x.id).years.length; })[0] || STUDIES[0]).id;
+      UI.study = saved && (saved === 'ALL' || STUDIES.some(function (x) { return x.id === saved; })) ? saved : 'ALL';
       render();
     });
   }

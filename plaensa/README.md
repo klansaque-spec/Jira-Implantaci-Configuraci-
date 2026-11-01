@@ -3,8 +3,9 @@
 Fitxer únic: **`PLAENSA_quadre_comandament.html`**. S'obre amb doble clic (Chrome/Edge) i funciona sense connexió: les llibreries (SheetJS, Chart.js, PptxGenJS) i les dades AEA 2026 vs 2024 hi van incrustades.
 
 ## Què fa
+- **Visió global** (pantalla inicial): titulars entre estudis, una targeta per estudi i RSBMN vs Catalunya.
 - **Una pestanya per estudi**: AEA, Urgències, Hospitalització amb internament, TRD, Primària, Embaràs/part/puerperi i Atenció Intermèdia.
-- **Sub-pestanyes**: Resum KPI i Top 5 · Satisfacció i Fidelitat · Semàfor per centre · Comparativa i evolució · CPR i Accions de millora.
+- **Sub-pestanyes** (cadascuna amb una franja de «Titulars per al comitè de direcció»): Resum KPI i Top 5 · Satisfacció i Fidelitat · Semàfor per centre · Comparativa i evolució · CPR i Accions de millora.
 - **Càrrega d'Excel**: llegeix el format oficial (fila «Pregunta resumida», una columna per centre i any) i la plantilla normalitzada (`Configuració › Dades › Descarregar plantilla`). Mostra una vista prèvia per full, avisos d'anys incoherents i valors que no quadren entre fulls. Si no reconeix un full, permet indicar la fila de capçalera i la columna de preguntes a mà.
 - **Semàfor**: vermell < 75 %, taronja 75–89,9 %, verd ≥ 90 % (P101: < 7,5 / 7,5–8,9 / ≥ 9). Diferències rellevants ±5 pp (P101 ±0,5). Tots els llindars es poden modificar.
 - **Marcs** de millor/pitjor per centre, sector i regió (P101 normalitzada a 0–1).
