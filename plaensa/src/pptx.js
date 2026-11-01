@@ -13,6 +13,7 @@
 
   function build(c) {
     var m = c.meta, s = c.s, y = c.UI.year, p = c.UI.prev;
+    var LOGO = (typeof window !== 'undefined' && window.PL_LOGO) || null;
     var pptx = new PptxGenJS();
     pptx.layout = 'LAYOUT_WIDE';
     pptx.author = 'Atenció a la Ciutadania · RSBMN';
@@ -25,9 +26,9 @@
         { rect: { x: 0, y: 0, w: 0.18, h: 7.5, fill: { color: RED } } },
         { line: { x: 0.5, y: 1.05, w: 12.3, h: 0, line: { color: LINE, width: 0.75 } } },
         { text: { text: footer, options: { x: 0.5, y: 7.05, w: 9, h: 0.3, fontSize: 8, color: GREY, fontFace: FONT } } },
-        { text: { text: 'Servei Català de la Salut', options: { x: 9.3, y: 7.05, w: 3.0, h: 0.3, fontSize: 8, color: GREY, fontFace: FONT, align: 'right' } } }
+        LOGO ? { image: { x: 9.95, y: 6.98, w: 2.3, h: 0.31, data: LOGO } } : { text: { text: 'Servei Català de la Salut', options: { x: 9.3, y: 7.05, w: 3.0, h: 0.3, fontSize: 8, color: GREY, fontFace: FONT, align: 'right' } } }
       ],
-      slideNumber: { x: 12.45, y: 7.05, w: 0.5, h: 0.3, fontSize: 8, color: GREY, fontFace: FONT }
+      slideNumber: { x: 9.4, y: 7.05, w: 0.5, h: 0.3, fontSize: 8, color: GREY, fontFace: FONT }
     });
     pptx.defineSlideMaster({ title: 'SECT', background: { color: LIGHT }, objects: [{ rect: { x: 0, y: 0, w: 4.2, h: 7.5, fill: { color: RED } } }] });
 
@@ -61,6 +62,7 @@
     var cover = pptx.addSlide();
     cover.background = { color: 'FFFFFF' };
     cover.addShape(pptx.shapes.RECTANGLE, { x: 0, y: 0, w: 13.33, h: 0.35, fill: { color: RED } });
+    if (LOGO) cover.addImage({ data: LOGO, x: 0.8, y: 0.8, w: 4.2, h: 0.565 });
     cover.addText([{ text: 'PLAENSA ' + y, options: { fontSize: 40, bold: true, color: RED, breakLine: true } }, { text: c.studyName(s), options: { fontSize: 30, bold: true, color: DARK } }], { x: 0.8, y: 2.0, w: 11.5, h: 2.2, fontFace: FONT });
     cover.addText([{ text: 'Atenció a la Ciutadania - RSBMN', options: { breakLine: true } }, { text: 'Servei Català de la Salut' }], { x: 0.8, y: 4.4, w: 8, h: 0.9, fontSize: 16, color: GREY, fontFace: FONT });
     cover.addText(today(), { x: 0.8, y: 5.6, w: 6, h: 0.4, fontSize: 12, color: GREY, fontFace: FONT });

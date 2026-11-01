@@ -11,7 +11,12 @@ parsed.sheets = parsed.sheets.filter(s => s.ok).map(s => ({ name: s.name, ok: tr
 const def = { study: parsed.study, parsed };
 
 let shell = rd('src/shell.html');
+const noLogo = process.argv.includes('--no-logo');
+const logoPath = path.join(__dirname, 'assets', 'logo-salut-generalitat.png');
+const logo = !noLogo && fs.existsSync(logoPath) ? 'data:image/png;base64,' + fs.readFileSync(logoPath).toString('base64') : null;
 const parts = {
+  BRAND: logo ? '<span class="brand-logo"><img src="' + logo + '" alt="Salut · Generalitat de Catalunya" width="200" height="27"></span><span class="brand-sep" aria-hidden="true"></span>' : '<div class="brand-mark" aria-hidden="true">PL</div>',
+  LOGO: JSON.stringify(logo),
   CSS: rd('src/app.css'),
   BUILD: new Date().toISOString().slice(0, 10),
   LIB_XLSX: js(rd('node_modules/xlsx/dist/xlsx.full.min.js')),
@@ -26,6 +31,6 @@ for (const [k, v] of Object.entries(parts)) shell = shell.split('/*@@' + k + '@@
 
 const body = shell;
 const full = '<!DOCTYPE html>\n<html lang="ca">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n' + body.replace('</style>', '</style>\n</head>\n<body>') + '\n</body>\n</html>\n';
-fs.writeFileSync(path.join(__dirname, 'PLAENSA_quadre_comandament.html'), full);
-if (process.argv[2]) fs.writeFileSync(process.argv[2], body);
+if (!noLogo) fs.writeFileSync(path.join(__dirname, 'PLAENSA_quadre_comandament.html'), full);
+if (process.argv[2] && !process.argv[2].startsWith('--')) fs.writeFileSync(process.argv[2], body);
 console.log('OK', (full.length / 1024 / 1024).toFixed(2) + ' MB', def.parsed.sheets[0].records.length + ' valors AEA');

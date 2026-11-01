@@ -12,6 +12,20 @@
   var DEFAULT_CPR = { URG: ['P7', 'P23', 'P26', 'P102'], AP: ['P2', 'P9', 'P15', 'P102'], TRD: ['P4', 'P5', 'P7', 'P9'] };
   var PALETTE = ['#1f6fb2', '#c2185b', '#2e7d32', '#ef6c00', '#6a1b9a', '#00838f', '#8d6e63', '#5c6bc0', '#9e9d24', '#d84315'];
 
+
+  /* Icones dels serveis (traç propi, 24x24) */
+  var ICONS = {
+    ALL: '<rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><path d="M14 18l2.5 2.5L21 15"/>',
+    AEA: '<path d="M5 3v5a5 5 0 0 0 10 0V3"/><path d="M10 13v1.5a5.5 5.5 0 0 0 11 0V12"/><circle cx="21" cy="9.5" r="2.2"/>',
+    URG: '<rect x="1.5" y="7" width="13" height="10" rx="1.2"/><path d="M14.5 10h4l3.5 4v3h-7.5z"/><circle cx="6.5" cy="18.5" r="1.9"/><circle cx="17.5" cy="18.5" r="1.9"/><path d="M8 9.5v5M5.5 12h5"/><path d="M6 4.5h3"/>',
+    AH: '<path d="M2 5v15M2 15.5h20V20M22 15.5V13a3 3 0 0 0-3-3h-8v5.5"/><circle cx="6.5" cy="11.5" r="2.2"/>',
+    TRD: '<path d="M12 3v8.5M12 8.5l-3 3M12 8.5l3 3"/><path d="M8.5 7.5C5.5 7.5 3 13 3 17.5c0 2 1.2 3 3 3s3-1 3-3V11"/><path d="M15.5 7.5c3 0 5.5 5.5 5.5 10 0 2-1.2 3-3 3s-3-1-3-3V11"/>',
+    AP: '<path d="M3 11l9-7.5 9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M12 12.5v6M9 15.5h6"/>',
+    EMB: '<path d="M13.5 3.5a7.5 7.5 0 0 1 7.5 7.5h-7.5z"/><path d="M2 5.5h2.5L7 11h14a5 5 0 0 1-5 5H10a4 4 0 0 1-4-4"/><circle cx="8.5" cy="19.5" r="1.7"/><circle cx="17.5" cy="19.5" r="1.7"/>',
+    AI: '<path d="M20.4 12.6L12 21l-8.4-8.4A5 5 0 0 1 12 5.7a5 5 0 0 1 8.4 6.9z"/><path d="M4.5 12.5h4l1.5-3 2.5 6 1.5-3h5"/>'
+  };
+  function icon(id, size) { return '<span class="svc s' + (size || 20) + '" aria-hidden="true"><svg viewBox="0 0 24 24">' + (ICONS[id] || ICONS.ALL) + '</svg></span>'; }
+
   /* ---------- Estat ---------- */
   function freshState() {
     var studies = {};
@@ -299,7 +313,7 @@
     if (UI.sector && m.sectors.indexOf(UI.sector) < 0) UI.sector = '';
 
     var subs = [['resum', 'Resum KPI i Top 5'], ['sf', 'Satisfacció i Fidelitat'], ['semafor', 'Semàfor per centre'], ['comp', 'Comparativa i evolució'], ['cpr', 'CPR i Accions de millora']];
-    var html = '<div class="study-head"><div><h2>' + esc(studyName(s)) + '</h2><div class="sub">PLAENSA ' + UI.year + (UI.prev ? ' vs ' + UI.prev : '') + ' · ' + m.centres.length + ' centres · ' + m.qs.length + ' preguntes · Regió Sanitària Metropolitana Nord</div></div>' +
+    var html = '<div class="study-head"><div class="title-row">' + icon(s, 56) + '<div><h2>' + esc(studyName(s)) + '</h2><div class="sub">PLAENSA ' + UI.year + (UI.prev ? ' vs ' + UI.prev : '') + ' · ' + m.centres.length + ' centres · ' + m.qs.length + ' preguntes · Regió Sanitària Metropolitana Nord</div></div></div>' +
       '<div class="filters">' +
       '<div class="field"><label for="f-year">Any</label><select id="f-year">' + m.years.map(function (y) { return '<option' + (y === UI.year ? ' selected' : '') + '>' + y + '</option>'; }).join('') + '</select></div>' +
       '<div class="field"><label for="f-prev">Comparar amb</label><select id="f-prev"><option value="">— cap —</option>' + m.years.filter(function (y) { return y < UI.year; }).map(function (y) { return '<option' + (y === UI.prev ? ' selected' : '') + '>' + y + '</option>'; }).join('') + '</select></div>' +
@@ -319,10 +333,10 @@
   }
 
   function renderStudyTabs() {
-    $('#studies').innerHTML = '<button type="button" class="study-tab overview' + (UI.study === 'ALL' ? ' active' : '') + '" data-st="ALL"><span class="code">RSBMN · tots els estudis</span><span class="nm">Visió global</span></button>' + STUDIES.map(function (st) {
+    $('#studies').innerHTML = '<button type="button" class="study-tab overview' + (UI.study === 'ALL' ? ' active' : '') + '" data-st="ALL">' + icon('ALL') + '<span class="tx"><span class="code">RSBMN · tots els estudis</span><span class="nm">Visió global</span></span></button>' + STUDIES.map(function (st) {
       var m = meta(st.id), has = m.years.length > 0;
-      return '<button type="button" class="study-tab' + (UI.study === st.id ? ' active' : '') + (has ? '' : ' empty') + '" data-st="' + st.id + '">' +
-        '<span class="code">' + st.id + (has ? ' · ' + m.years.join('/') : ' · sense dades') + '</span><span class="nm">' + esc(st.name) + '</span></button>';
+      return '<button type="button" class="study-tab' + (UI.study === st.id ? ' active' : '') + (has ? '' : ' empty') + '" data-st="' + st.id + '">' + icon(st.id) +
+        '<span class="tx"><span class="code">' + st.id + (has ? ' · ' + m.years.join('/') : ' · sense dades') + '</span><span class="nm">' + esc(st.name) + '</span></span></button>';
     }).join('');
     $all('.study-tab').forEach(function (b) { b.onclick = function () { openStudy(b.dataset.st); }; });
   }
@@ -543,15 +557,15 @@
       hls.push({ tone: wr.red > 0.25 ? 'r' : 'a', kicker: 'Més àrea de millora', big: Math.round(wr.red * 100) + '%', text: wr.st.name + ': resultats centre·pregunta en vermell', sub: wr.worst ? 'Pitjor pregunta: ' + wr.worst.q + ' ' + shortQ(wr.st.id, wr.worst.q) + ' (' + fmt(wr.worst.q, wr.worst.v) + ')' : '',
         viz: { t: 'dist', parts: [{ n: wr.dist.r, tone: 'r', label: 'Vermell' }, { n: wr.dist.a, tone: 'a', label: 'Taronja' }, { n: wr.dist.g, tone: 'g', label: 'Verd' }] } });
     }
-    var html = '<div class="study-head"><div><h2>Visió global PLAENSA</h2><div class="sub">Regió Sanitària Metropolitana Nord · últim any disponible de cada estudi · valors RSBMN (oficials quan el fitxer els inclou, si no mitjana de centres)</div></div>' +
+    var html = '<div class="study-head"><div class="title-row">' + icon('ALL', 56) + '<div><h2>Visió global PLAENSA</h2><div class="sub">Regió Sanitària Metropolitana Nord · últim any disponible de cada estudi · valors RSBMN (oficials quan el fitxer els inclou, si no mitjana de centres)</div></div></div>' +
       '<div class="filters"><button class="btn primary" type="button" id="ov-load">Carregar Excel</button></div></div>' +
       '<div style="margin-top:16px">' + hl(hls, 'Tots els estudis · ' + full.length + ' carregats') + '</div>' +
       '<h3 class="sec-h">Estudis</h3><div class="ov-grid">' + rows.map(function (r) {
-        if (r.empty) return '<button type="button" class="ov-tile empty" data-open="' + r.st.id + '"><span class="ov-code">' + r.st.id + '</span><span class="ov-name">' + esc(r.st.name) + '</span><span class="ov-empty">Sense dades · fes clic per obrir-lo i carregar l\'Excel</span></button>';
+        if (r.empty) return '<button type="button" class="ov-tile empty" data-open="' + r.st.id + '"><span class="ov-head">' + icon(r.st.id, 36) + '<span><span class="ov-code">' + r.st.id + '</span><br><span class="ov-name">' + esc(r.st.name) + '</span></span></span><span class="ov-empty">Sense dades · fes clic per obrir-lo i carregar l\'Excel</span></button>';
         var c = sem('P101', r.p101);
         return '<button type="button" class="ov-tile t-' + c + '" data-open="' + r.st.id + '">' +
           '<span class="ov-top"><span class="ov-code">' + r.st.id + ' · ' + r.y + (r.pv ? ' vs ' + r.pv : '') + '</span><span class="pill ' + c + '"><span class="dot ' + c + '"></span>' + SEM_TXT[c] + '</span></span>' +
-          '<span class="ov-name">' + esc(r.st.name) + '</span>' +
+          '<span class="ov-head">' + icon(r.st.id, 36) + '<span class="ov-name">' + esc(r.st.name) + '</span></span>' +
           '<span class="ov-kpis"><span><span class="ov-lbl">Satisfacció P101</span><span class="ov-big">' + fmt('P101', r.p101) + '</span><span class="ov-d">' + (r.p101p != null ? dspan('P101', r.p101 - r.p101p) + ' vs ' + r.pv : '&nbsp;') + '</span></span>' +
           '<span><span class="ov-lbl">Fidelitat P102</span><span class="ov-big sm">' + fmt('P102', r.p102) + '</span><span class="ov-d">' + (r.p102p != null ? dspan('P102', r.p102 - r.p102p) + ' vs ' + r.pv : '&nbsp;') + '</span></span></span>' +
           hlViz({ t: 'bullet', v: as100('P101', r.p101), cat: as100('P101', r.cat101), tone: c, lo: '4', hi: '10', label: fmt('P101', r.p101) }) +

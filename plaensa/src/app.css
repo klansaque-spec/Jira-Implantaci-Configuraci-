@@ -65,6 +65,20 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 .topbar .wrap { display: flex; align-items: center; gap: 14px; padding-block: 10px; flex-wrap: wrap; }
 .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .brand-mark { width: 34px; height: 34px; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; font-weight: 700; font-size: 13px; border-radius: 3px; letter-spacing: .5px; }
+.brand-logo { background: #ffffff; padding: 6px 10px; border-radius: 4px; display: inline-flex; align-items: center; flex: none; }
+.brand-logo img { height: 27px; width: auto; display: block; }
+.brand-sep { width: 1px; align-self: stretch; background: var(--line); margin: 2px 4px; }
+.svc { display: inline-grid; place-items: center; flex: none; border-radius: 8px; background: var(--accent-soft); color: var(--accent); }
+.svc svg { width: 60%; height: 60%; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.svc.s20 { width: 26px; height: 26px; border-radius: 6px; } .svc.s36 { width: 40px; height: 40px; } .svc.s56 { width: 58px; height: 58px; border-radius: 12px; }
+.study-tab { flex-direction: row !important; align-items: center !important; gap: 10px; }
+.study-tab .tx { display: flex; flex-direction: column; min-width: 0; }
+.study-tab.active .svc { background: rgba(255,255,255,.18); color: var(--accent-ink); }
+.study-tab.overview .svc { background: rgba(255,255,255,.12); color: var(--hl-ink); }
+.study-tab.empty .svc { background: var(--surface-2); color: var(--muted); }
+.title-row { display: flex; gap: 14px; align-items: center; min-width: 0; }
+.ov-head { display: flex; gap: 12px; align-items: center; }
+.ov-tile.empty .svc { background: var(--surface-2); color: var(--muted); }
 .brand h1 { font-family: var(--font-display); font-size: 19px; letter-spacing: .2px; }
 .brand p { margin: 0; color: var(--muted); font-size: 12px; }
 .top-actions { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
@@ -285,6 +299,9 @@ footer.site { color: var(--muted); font-size: 11px; padding-block: 18px; }
 @keyframes hl-in { from { transform: translateY(6px); } to { transform: none; } }
 
 @media (max-width: 640px) {
+  .brand-logo img { height: 20px; }
+  .brand-sep { display: none; }
+  .svc.s56 { width: 44px; height: 44px; }
   .brand h1 { font-size: 16px; }
   .kpi-value { font-size: 24px; }
   .hl-big { font-size: 30px; }

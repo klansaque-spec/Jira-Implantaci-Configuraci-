@@ -1,6 +1,6 @@
 # Quadre de comandament PLAENSA · RSBMN
 
-Fitxer únic: **`PLAENSA_quadre_comandament.html`**. S'obre amb doble clic (Chrome/Edge) i funciona sense connexió: les llibreries (SheetJS, Chart.js, PptxGenJS) i les dades AEA 2026 vs 2024 hi van incrustades.
+Fitxer únic: **`PLAENSA_quadre_comandament.html`** (amb el logo /Salut · Generalitat de la plantilla corporativa, a `assets/`). S'obre amb doble clic (Chrome/Edge) i funciona sense connexió: les llibreries (SheetJS, Chart.js, PptxGenJS) i les dades AEA 2026 vs 2024 hi van incrustades.
 
 ## Què fa
 - **Visió global** (pantalla inicial): titulars entre estudis, una targeta per estudi i RSBMN vs Catalunya.
@@ -18,5 +18,6 @@ Les càrregues, la configuració (sectors, CPR, transversals) i les accions es g
 ## Regenerar el fitxer
 ```bash
 cd plaensa && npm install && npm run build
+# versió sense logos institucionals: node build.js sortida.html --no-logo
 ```
 Codi font a `src/` (`parser.js` lector d'Excel, `app.js` quadre, `pptx.js` presentació, `app.css`, `shell.html`). Les dades incrustades provenen de `dades/AEA_2026_2024_DOC_DE_TREBALL.xlsx`.
