@@ -663,7 +663,7 @@
         labels: labels,
         datasets: [
           { label: sc, data: qv.map(function (x) { return as100(x.q, x.v); }), backgroundColor: qv.map(function (x) { return semColor(sem(x.q, x.v)); }), borderRadius: 3 },
-          { type: 'line', label: 'Catalunya', data: qv.map(function (x) { return as100(x.q, val(s, UI.year, 'CAT', x.q)); }), borderColor: css('--ink'), backgroundColor: css('--ink'), showLine: false, pointStyle: 'line', pointRadius: 10, pointBorderWidth: 3 }
+          { type: 'line', label: 'Catalunya', data: qv.map(function (x) { return as100(x.q, val(s, UI.year, 'CAT', x.q)); }), borderColor: css('--muted'), backgroundColor: css('--muted'), showLine: false, pointStyle: 'line', pointRadius: 10, pointBorderWidth: 3 }
         ]
       },
       options: {
@@ -716,7 +716,7 @@
       var ds = [{ label: String(UI.year), data: cs.map(function (r) { return as100(q, r.get(UI.year, q)); }), backgroundColor: cs.map(function (r) { return semColor(sem(q, r.get(UI.year, q))); }), borderRadius: 3 }];
       if (UI.prev) ds.push({ label: String(UI.prev), data: cs.map(function (r) { return as100(q, r.get(UI.prev, q)); }), backgroundColor: css('--line'), borderRadius: 3 });
       var cat = as100(q, val(s, UI.year, 'CAT', q));
-      ds.push({ type: 'line', label: 'Catalunya ' + UI.year, data: cs.map(function () { return cat; }), borderColor: css('--ink'), borderDash: [5, 4], pointRadius: 0, borderWidth: 1.5 });
+      ds.push({ type: 'line', label: 'Catalunya ' + UI.year, data: cs.map(function () { return cat; }), borderColor: css('--muted'), borderDash: [5, 4], pointRadius: 0, borderWidth: 1.5 });
       chart(q === 'P101' ? 'c-101' : 'c-102', {
         type: 'bar', data: { labels: cs.map(function (r) { return r.name; }), datasets: ds },
         options: {
@@ -910,7 +910,7 @@
   }
   function compEntities(s) {
     var ents = [];
-    if (UI.comp.refs.CAT) ents.push({ name: 'Catalunya', color: css('--ink'), dash: true, get: function (y, q) { return val(s, y, 'CAT', q); } });
+    if (UI.comp.refs.CAT) ents.push({ name: 'Catalunya', color: css('--muted'), dash: true, get: function (y, q) { return val(s, y, 'CAT', q); } });
     if (UI.comp.refs.RSBMN) ents.push({ name: 'RSBMN', color: css('--accent'), dash: true, get: function (y, q) { return agg(s, y, 'RSBMN', q).v; } });
     if (UI.comp.sectors) {
       uniq(UI.comp.centres.map(function (k) { return S.centres[k].sector; }).filter(Boolean)).forEach(function (sc, i) {
@@ -1340,7 +1340,10 @@
       var dark = cur ? cur === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
       r.setAttribute('data-theme', dark ? 'light' : 'dark'); lsSet('plaensa-theme', dark ? 'light' : 'dark'); render();
     };
-    var th = lsGet('plaensa-theme'); if (th) document.documentElement.setAttribute('data-theme', th);
+    var th = lsGet('plaensa-theme');
+    // Per defecte, tema clar (menys contrast); el fosc només si l'usuari el tria
+    if (th) document.documentElement.setAttribute('data-theme', th);
+    else if (!document.documentElement.getAttribute('data-theme')) document.documentElement.setAttribute('data-theme', 'light');
     UI.sub = lsGet('plaensa-sub') || 'resum';
     DB.get('state').then(function (st) {
       if (st && st.records && Object.keys(st.records).length) S = Object.assign(freshState(), st);
