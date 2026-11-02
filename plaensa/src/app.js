@@ -10,7 +10,7 @@
     UP908: 'H. Mollet', UP1425: 'H. Mataró', UP3536: 'ICO Badalona'
   };
   var DEFAULT_CPR = { URG: ['P7', 'P23', 'P26', 'P102'], AP: ['P2', 'P9', 'P15', 'P102'], TRD: ['P4', 'P5', 'P7', 'P9'] };
-  var PALETTE = ['#1f6fb2', '#c2185b', '#2e7d32', '#ef6c00', '#6a1b9a', '#00838f', '#8d6e63', '#5c6bc0', '#9e9d24', '#d84315'];
+  var PALETTE = ['#4f7cac', '#c0697a', '#5f9e74', '#d9925a', '#8a73b0', '#4f9c9e', '#a08778', '#7383c4', '#a7a85a', '#c97b62'];
 
 
   /* Icones dels serveis (traç propi, 24x24) */
