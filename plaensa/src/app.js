@@ -26,6 +26,15 @@
   };
   function icon(id, size) { return '<span class="svc s' + (size || 20) + '" aria-hidden="true"><svg viewBox="0 0 24 24">' + (ICONS[id] || ICONS.ALL) + '</svg></span>'; }
 
+
+  var SUBS = [
+    ['resum', 'Resum i Top 5', 'Titulars, millors i pitjors', '<path d="M4 15a8 8 0 1 1 16 0"/><path d="M12 15l4-5"/><circle cx="12" cy="15" r="1.4"/><path d="M4 19h16"/>'],
+    ['sf', 'Satisfacció i Fidelitat', 'P101 i P102 per centre', '<circle cx="12" cy="12" r="9"/><path d="M8.5 14.5a4.5 4.5 0 0 0 7 0"/><path d="M9 9.5h.01M15 9.5h.01"/>'],
+    ['semafor', 'Semàfor per centre', 'Matriu pregunta × centre', '<rect x="7.5" y="2.5" width="9" height="19" rx="3"/><circle cx="12" cy="7" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="17" r="1.6"/>'],
+    ['comp', 'Comparativa i evolució', 'Centres, sectors i anys', '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'],
+    ['cpr', 'CPR i Accions', 'Objectius i plans de millora', '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><path d="M12 12l7-7M16 5h3v3"/>']
+  ];
+
   /* ---------- Estat ---------- */
   function freshState() {
     var studies = {};
@@ -312,21 +321,25 @@
     if (UI.prev == null && !UI.prevNone) UI.prev = m.years.filter(function (y) { return y < UI.year; })[0] || null;
     if (UI.sector && m.sectors.indexOf(UI.sector) < 0) UI.sector = '';
 
-    var subs = [['resum', 'Resum KPI i Top 5'], ['sf', 'Satisfacció i Fidelitat'], ['semafor', 'Semàfor per centre'], ['comp', 'Comparativa i evolució'], ['cpr', 'CPR i Accions de millora']];
+    var subs = SUBS;
     var html = '<div class="study-head"><div class="title-row">' + icon(s, 56) + '<div><h2>' + esc(studyName(s)) + '</h2><div class="sub">PLAENSA ' + UI.year + (UI.prev ? ' vs ' + UI.prev : '') + ' · ' + m.centres.length + ' centres · ' + m.qs.length + ' preguntes · Regió Sanitària Metropolitana Nord</div></div></div>' +
       '<div class="filters">' +
       '<div class="field"><label for="f-year">Any</label><select id="f-year">' + m.years.map(function (y) { return '<option' + (y === UI.year ? ' selected' : '') + '>' + y + '</option>'; }).join('') + '</select></div>' +
       '<div class="field"><label for="f-prev">Comparar amb</label><select id="f-prev"><option value="">— cap —</option>' + m.years.filter(function (y) { return y < UI.year; }).map(function (y) { return '<option' + (y === UI.prev ? ' selected' : '') + '>' + y + '</option>'; }).join('') + '</select></div>' +
       '<div class="field"><label for="f-sector">Àmbit</label><select id="f-sector"><option value="">Tota la regió (RSBMN)</option>' + m.sectors.map(function (x) { return '<option' + (x === UI.sector ? ' selected' : '') + '>' + esc(x) + '</option>'; }).join('') + '</select></div>' +
+      '<button class="btn" id="b-rep" type="button">Informe comitè (HTML)</button>' +
       '<button class="btn primary" id="b-pptx" type="button">Descarregar presentació</button>' +
       '</div></div>' +
-      '<nav class="subtabs" role="tablist">' + subs.map(function (x) { return '<button type="button" role="tab" class="subtab' + (UI.sub === x[0] ? ' active' : '') + '" data-sub="' + x[0] + '">' + x[1] + '</button>'; }).join('') + '</nav>' +
+      '<nav class="subtabs" role="tablist" aria-label="Apartats de l\'estudi">' + subs.map(function (x) {
+        return '<button type="button" role="tab" aria-selected="' + (UI.sub === x[0]) + '" class="subtab' + (UI.sub === x[0] ? ' active' : '') + '" data-sub="' + x[0] + '"><span class="st-ic" aria-hidden="true"><svg viewBox="0 0 24 24">' + x[3] + '</svg></span><span class="st-tx"><span class="st-nm">' + x[1] + '</span><span class="st-ds">' + x[2] + '</span></span></button>';
+      }).join('') + '</nav>' +
       '<div id="sub"></div>';
     p.innerHTML = html;
     $('#f-year').onchange = function () { UI.year = +this.value; UI.prev = null; UI.prevNone = false; render(); };
     $('#f-prev').onchange = function () { UI.prev = this.value ? +this.value : null; UI.prevNone = !this.value; render(); };
     $('#f-sector').onchange = function () { UI.sector = this.value; render(); };
     $('#b-pptx').onclick = function () { buildPptx(s); };
+    $('#b-rep').onclick = function () { exportReport(s); };
     $all('.subtab').forEach(function (b) { b.onclick = function () { UI.sub = b.dataset.sub; lsSet('plaensa-sub', UI.sub); render(); }; });
     var sub = $('#sub');
     ({ resum: renderResum, sf: renderSF, semafor: renderSemafor, comp: renderComp, cpr: renderCpr })[UI.sub](sub, s);
@@ -558,7 +571,7 @@
         viz: { t: 'dist', parts: [{ n: wr.dist.r, tone: 'r', label: 'Vermell' }, { n: wr.dist.a, tone: 'a', label: 'Taronja' }, { n: wr.dist.g, tone: 'g', label: 'Verd' }] } });
     }
     var html = '<div class="study-head"><div class="title-row">' + icon('ALL', 56) + '<div><h2>Visió global PLAENSA</h2><div class="sub">Regió Sanitària Metropolitana Nord · últim any disponible de cada estudi · valors RSBMN (oficials quan el fitxer els inclou, si no mitjana de centres)</div></div></div>' +
-      '<div class="filters"><button class="btn primary" type="button" id="ov-load">Carregar Excel</button></div></div>' +
+      '<div class="filters"><button class="btn" type="button" id="ov-rep">Informe comitè (HTML)</button><button class="btn primary" type="button" id="ov-load">Carregar Excel</button></div></div>' +
       '<div style="margin-top:16px">' + hl(hls, 'Tots els estudis · ' + full.length + ' carregats') + '</div>' +
       '<h3 class="sec-h">Estudis</h3><div class="ov-grid">' + rows.map(function (r) {
         if (r.empty) return '<button type="button" class="ov-tile empty" data-open="' + r.st.id + '"><span class="ov-head">' + icon(r.st.id, 36) + '<span><span class="ov-code">' + r.st.id + '</span><br><span class="ov-name">' + esc(r.st.name) + '</span></span></span><span class="ov-empty">Sense dades · fes clic per obrir-lo i carregar l\'Excel</span></button>';
@@ -578,6 +591,7 @@
       '<div class="note" style="margin-top:12px">Cada estudi té el seu propi qüestionari i calendari: compareu nivells i tendències, no diferències petites entre estudis. P101 es mostra en escala 0–100 (× 10) als gràfics.</div>';
     p.innerHTML = html;
     $('#ov-load').onclick = openLoad;
+    $('#ov-rep').onclick = function () { exportReport('ALL'); };
     $all('[data-open]').forEach(function (b) { b.onclick = function () { openStudy(b.dataset.open); }; });
     ['P101', 'P102'].forEach(function (q) {
       var rs = full.filter(function (r) { return r[q === 'P101' ? 'p101' : 'p102'] != null; });
@@ -1267,6 +1281,44 @@
     var sel = {}; d.parsed.sheets.forEach(function (sh) { sel[sh.name] = true; });
     mergeParsed(d.study, d.parsed, sel);
     S.loads[S.loads.length - 1].file += ' (incrustat)';
+  }
+
+  /* ---------- Informe estàtic per al comitè ---------- */
+  function exportReport(s) {
+    var keep = UI.sub, parts = [];
+    var list = s === 'ALL' ? [['ov', 'Visió global de tots els estudis']] : SUBS;
+    try {
+      list.forEach(function (x) {
+        if (s !== 'ALL') UI.sub = x[0];
+        render();
+        var src = s === 'ALL' ? $('#panel') : $('#sub');
+        var cl = src.cloneNode(true);
+        var oc = $all('canvas', src), cc = $all('canvas', cl);
+        cc.forEach(function (c, i) {
+          var img = document.createElement('img'); img.alt = 'Gràfic'; img.style.width = '100%';
+          try { img.src = oc[i].toDataURL('image/png'); } catch (e) { /* gràfic no exportable */ }
+          c.parentNode.replaceChild(img, c);
+        });
+        $all('.picklist', cl).forEach(function (n) { var g = n.closest('.grid'); if (g) g.remove(); });
+        $all('form', cl).forEach(function (f) { var g = f.closest('.grid'); (g || f).remove(); });
+        $all('button, .toolbar, .filters, select, input, #del-confirm, .subtabs', cl).forEach(function (e) { e.remove(); });
+        $all('.chart-box', cl).forEach(function (b) { b.style.height = 'auto'; });
+        parts.push('<section class="rep-sec"><h2 class="rep-h">' + esc(x[1]) + '</h2>' + cl.innerHTML + '</section>');
+      });
+    } finally { UI.sub = keep; render(); }
+    var title = s === 'ALL' ? 'Visió global PLAENSA' : studyName(s);
+    var scope = s === 'ALL' ? 'Tots els estudis carregats · últim any de cada estudi' : 'PLAENSA ' + UI.year + (UI.prev ? ' vs ' + UI.prev : '') + ' · ' + (UI.sector || 'Regió Sanitària Metropolitana Nord');
+    var today = new Date().toLocaleDateString('ca-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+    var logo = window.PL_LOGO ? '<img src="' + window.PL_LOGO + '" alt="Salut · Generalitat de Catalunya" style="height:30px;width:auto">' : '';
+    var repCss = '.rep{padding-block:24px;max-width:1280px}.rep-top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;border-bottom:3px solid var(--accent);padding-bottom:12px;margin-bottom:8px}' +
+      '.rep-top h1{font-family:var(--font-display);font-size:30px}.rep-top p{margin:4px 0 0;color:var(--muted)}.rep-h{font-family:var(--font-display);font-size:22px;margin:30px 0 12px;padding-left:10px;border-left:5px solid var(--accent)}' +
+      '.rep .tscroll{max-height:none!important}.rep .hl-card{animation:none}.rep .ov-tile{cursor:default}.rep .ov-open{display:none}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}' +
+      '@page{size:A4 landscape;margin:10mm}@media print{.rep-sec{break-before:page}.rep-sec:first-of-type{break-before:auto}.hl,.card,.ov-tile,tr{break-inside:avoid}}';
+    var doc = '<!doctype html><html lang="ca" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Informe PLAENSA · ' + esc(title) + '</title><style>' + document.getElementById('app-css').textContent + repCss + '</style></head><body><main class="wrap rep">' +
+      '<header class="rep-top"><div><h1>Informe per al comitè de direcció · ' + esc(title) + '</h1><p>' + esc(scope) + ' · generat el ' + esc(today) + '</p></div>' + logo + '</header>' +
+      parts.join('') + '<footer class="site">Font: CatSalut, PLAENSA. Informe generat amb el quadre de comandament PLAENSA RSBMN. Els semàfors segueixen els llindars del document de treball (vermell &lt; 75%, verd ≥ 90%; P101 &lt; 7,5 / ≥ 9). Per desar-lo en PDF: Imprimeix › Desa com a PDF (A4 horitzontal).</footer></main></body></html>';
+    saveBlob(new Blob([doc], { type: 'text/html' }), 'Informe_comite_PLAENSA_' + (s === 'ALL' ? 'global' : s + '_' + UI.year) + '.html');
+    toast('Informe generat: ' + title);
   }
 
   /* ---------- Presentació ---------- */

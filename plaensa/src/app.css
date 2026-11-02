@@ -112,9 +112,18 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 .field select, .field input, .field textarea { border: 1px solid var(--line); background: var(--surface); border-radius: var(--radius); padding: 6px 8px; min-width: 0; }
 .field textarea { min-height: 70px; resize: vertical; }
 
-.subtabs { display: flex; gap: 2px; border-bottom: 1px solid var(--line); margin: 16px 0; overflow-x: auto; }
-.subtab { background: none; border: none; padding: 9px 14px; cursor: pointer; color: var(--muted); border-bottom: 3px solid transparent; white-space: nowrap; font-weight: 600; }
-.subtab.active { color: var(--ink); border-bottom-color: var(--accent); }
+.subtabs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin: 18px 0; padding: 6px; background: var(--surface-2); border-radius: 10px; }
+.subtab { display: flex; align-items: center; gap: 10px; text-align: left; border: 1px solid transparent; background: transparent; padding: 10px 12px; border-radius: 8px; cursor: pointer; color: var(--ink); min-width: 0; transition: background .15s ease, box-shadow .15s ease; }
+.subtab:hover { background: var(--surface); border-color: var(--line); }
+.subtab .st-ic { flex: none; width: 36px; height: 36px; border-radius: 8px; display: grid; place-items: center; background: var(--surface); color: var(--accent); border: 1px solid var(--line); }
+.subtab .st-ic svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.subtab .st-tx { display: flex; flex-direction: column; min-width: 0; }
+.subtab .st-nm { font-weight: 700; font-size: 14px; line-height: 1.2; }
+.subtab .st-ds { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.subtab.active { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); box-shadow: 0 6px 16px color-mix(in srgb, var(--accent) 30%, transparent); }
+.subtab.active .st-ic { background: rgba(255,255,255,.2); border-color: transparent; color: var(--accent-ink); }
+.subtab.active .st-ds { color: var(--accent-ink); opacity: .85; }
+@media (max-width: 1100px) { .subtabs { grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr)); } }
 
 .note { font-size: 12px; color: var(--muted); background: var(--surface-2); border-radius: var(--radius); padding: 8px 10px; }
 .note.warn { border-left: 3px solid var(--sem-a); }

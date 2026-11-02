@@ -9,6 +9,7 @@ Fitxer únic: **`PLAENSA_quadre_comandament.html`** (amb el logo /Salut · Gener
 - **Càrrega d'Excel**: llegeix el format oficial (fila «Pregunta resumida», una columna per centre i any) i la plantilla normalitzada (`Configuració › Dades › Descarregar plantilla`). Mostra una vista prèvia per full, avisos d'anys incoherents i valors que no quadren entre fulls. Si no reconeix un full, permet indicar la fila de capçalera i la columna de preguntes a mà.
 - **Semàfor**: vermell < 75 %, taronja 75–89,9 %, verd ≥ 90 % (P101: < 7,5 / 7,5–8,9 / ≥ 9). Diferències rellevants ±5 pp (P101 ±0,5). Tots els llindars es poden modificar.
 - **Marcs** de millor/pitjor per centre, sector i regió (P101 normalitzada a 0–1).
+- **Informe comitè (HTML)**: document estàtic amb logos, titulars, gràfics i taules de tots els apartats, preparat per imprimir a PDF (A4 horitzontal).
 - **Presentació** `.pptx` per estudi amb l'estructura del model d'Urgències: taules i gràfics editables i conclusions generades a partir de les dades.
 - **Accions de millora** per centre: registre, exportació a Excel i informe del centre.
 
