@@ -17,6 +17,8 @@ const logo = !noLogo && fs.existsSync(logoPath) ? 'data:image/png;base64,' + fs.
 const parts = {
   BRAND: logo ? '<span class="brand-logo"><img src="' + logo + '" alt="Salut · Generalitat de Catalunya" width="200" height="27"></span><span class="brand-sep" aria-hidden="true"></span>' : '<div class="brand-mark" aria-hidden="true">PL</div>',
   LOGO: JSON.stringify(logo),
+  LOGOS: JSON.stringify(noLogo ? null : Object.fromEntries(fs.readdirSync(path.join(__dirname, 'assets', 'inst')).filter(f => f.endsWith('.png')).map(f => [f.replace('.png', ''), 'data:image/png;base64,' + fs.readFileSync(path.join(__dirname, 'assets', 'inst', f)).toString('base64')]))),
+  BRANDCOL: fs.readFileSync(path.join(__dirname, 'assets', 'inst', 'brand.json'), 'utf8'),
   CSS: rd('src/app.css'),
   BUILD: new Date().toISOString().slice(0, 10),
   LIB_XLSX: js(rd('node_modules/xlsx/dist/xlsx.full.min.js')),

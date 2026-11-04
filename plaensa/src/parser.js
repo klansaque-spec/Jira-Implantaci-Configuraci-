@@ -160,6 +160,8 @@
       var n = num(g(row, 'n')), lo = num(g(row, 'ic_inf')), hi = num(g(row, 'ic_sup'));
       if (n) rec.n = n;
       if (lo != null && hi != null) { rec.lo = normValue(q.code, lo); rec.hi = normValue(q.code, hi); }
+      var sc = str(g(row, 'signif_cat')); if (sc === '+' || sc === '-' || sc === '−') rec.sc = sc === '+' ? '+' : '-';
+      if (str(g(row, 'millor_cat'))) rec.best = str(g(row, 'millor_cat'));
       recs.push(rec);
     }
     if (!recs.length) warnings.push('La plantilla no té cap fila vàlida (cal estudi, any, pregunta_codi i valor).');
